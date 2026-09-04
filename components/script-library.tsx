@@ -84,7 +84,7 @@ export function ScriptLibrary() {
                         </span>
                       </div>
                       <p className="text-[13.5px] leading-[1.5] text-tx2">
-                        {ind.blurb}
+                        {ind.description}
                       </p>
                     </CardContent>
 
