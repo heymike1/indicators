@@ -16,6 +16,11 @@
 # next.js
 /.next/
 /out/
+# duplicate copies macOS/iCloud makes of build output
+* 2
+* 2.*
+* 3
+* 3.*
 
 # production
 /build

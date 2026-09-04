@@ -3,15 +3,14 @@
   "configurations": [
     {
       "name": "site",
-      "runtimeExecutable": "python3",
+      "runtimeExecutable": "/usr/local/bin/node",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "4322",
-        "--directory",
-        "out"
+        "node_modules/next/dist/bin/next",
+        "dev",
+        "--port",
+        "3000"
       ],
-      "port": 4322
+      "port": 3000
     }
   ]
 }
