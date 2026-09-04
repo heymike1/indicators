@@ -20,10 +20,11 @@ const PO3 = {
   ink: "#15171a",
 };
 
-/* A 729 range divides into three 243 blocks. The FCLs sit on the block
+/* A 243 range divides into three 81 blocks. The FCLs sit on the block
    boundaries, the fractal EQ in the middle of the outer blocks, and the
-   ERD/IRD band runs 81 either side of each range boundary. Expressed as
-   fractions of the half-range: */
+   ERD/IRD band runs a third of a block either side of each range boundary.
+   Only the labels carry the scale; the geometry below is the same set of
+   fractions of the half-range whichever level of the hierarchy is shown: */
 /** QT SSMT draws its cycle comparison in a single violet. */
 const QT = { line: "#6d5bd0", rule: "#c9ccc6" };
 
@@ -37,17 +38,13 @@ const GB = {
   tint: "#3d7fbf",
 };
 
-/** The sequence as the indicator lists it, and the points it marks on price:
- *  bar offset from the anchor, its label, and which kind of point it is. */
-const GB_MARKS: [number, string, keyof typeof GB][] = [
-  [0, "0", "x"],
-  [3, "3", "se"],
-  [6, "7", "se"],
-  [9, "14", "num"],
-  [14, "23", "num"],
-  [18, "29", "se"],
-  [27, "44", "num"],
+/** The sequence as the indicator lists it. On a one-minute chart the offset
+ *  from the anchor is the minute on the label, so the two are one number. */
+const GB_MARKS: [number, keyof typeof GB][] = [
+  [0, "x"], [3, "se"], [7, "se"], [14, "num"], [23, "num"], [29, "se"], [44, "num"],
 ];
+/** the point in the sequence that runs the anchor's liquidity */
+const GB_SWEEP = 7;
 
 const GB_TABLE: { label: string; cells: string[] }[] = [
   { label: "Algo 1", cells: ["0", "11(14)", "41(44)", "3(7)", "17(23)", "29(35)|71(77)", "Next → 17:03"] },
@@ -148,16 +145,28 @@ export const SPECS: Record<ChartKey, Spec> = {
 
   /* ---------- 01 Advanced PO3 Ranges: ES 15m ---------- */
   po3: {
-    seed: 30518, base: 5642.25, vol: 3.1, drift: 0.3, dec: 2,
-    t0: 8 * 60, step: 15, every: 12,
+    seed: 30518, base: 20335.5, vol: 5.5, drift: 0.3, dec: 2,
+    t0: 8 * 60, step: 1, every: 12,
     n: { lg: 66, sm: 44 },
     padT: { lg: 20, sm: 16 },
     // zoomed out so the full level structure, ERD bands included, sits inside
     vpad: 0.28,
     labelW: { lg: 118, sm: 0 },
     print: { step: 0.05, start: 0 },
-    swing: { path: [[0, 0.3], [0.13, 1], [0.6, -1], [1, 1]], amp: 8.5, chop: 1.7 },
-    alt: "ES 15-minute chart with the Power of Three range high and low zones, equilibrium, fair correction levels and fractal equilibrium plotted as price develops.",
+    swing: {
+      // steps down and back up rather than a clean arc, so each leg leaves a
+      // swing high or low behind and the retracements are legible
+      path: [
+        [0, 0.35], [0.06, 0.72], [0.09, 0.5], [0.13, 1],
+        [0.19, 0.42], [0.24, 0.7], [0.3, 0.12], [0.35, 0.4],
+        [0.42, -0.3], [0.47, -0.05], [0.53, -0.62], [0.57, -0.4], [0.61, -1],
+        [0.67, -0.45], [0.72, -0.72], [0.78, -0.1], [0.83, -0.38],
+        [0.89, 0.42], [0.93, 0.2], [1, 1],
+      ],
+      amp: 8.5,
+      chop: 1.15,
+    },
+    alt: "NQ 1-minute chart with the Power of Three range high and low zones, equilibrium, fair correction levels and fractal equilibrium plotted as price develops.",
     shapeOne(d) {
       const n = d.length;
       // the early peak sets the range high; the late rally comes back to it
@@ -170,9 +179,12 @@ export const SPECS: Record<ChartKey, Spec> = {
       // close the tape on the range high, without printing through it
       const tail = Math.round(n * 0.88);
       for (let i = tail; i < n; i++) {
-        shiftBar(d[i], (rHigh - d[i].c) * ((i - tail + 1) / (n - tail)) * 0.8);
+        shiftBar(d[i], (rHigh - d[i].c) * ((i - tail + 1) / (n - tail)) * 0.85);
         capHigh(d, i, rHigh);
       }
+      // the final bar touches the level exactly, so the node sits on its wick
+      liftHigh(d, n - 1, rHigh);
+      capHigh(d, n - 1, rHigh);
       return { rHigh, rLow, eq, hiI, loI };
     },
     draw(p: Panel, s, small, W, H, m) {
@@ -206,11 +218,11 @@ export const SPECS: Record<ChartKey, Spec> = {
 
       // --- equilibrium of the whole range ---
       line(0, { color: PO3.eq, w: 1.2, dash: "2 3", delay: 3.1 });
-      tag(0, "EQ: 729", PO3.eq, 3.35);
+      tag(0, "EQ: 243", PO3.eq, 3.35);
 
       if (!small) {
         // --- fair correction levels on the 243 block boundaries ---
-        ([[1, "Upper FCL: 243"], [-1, "Lower FCL: 243"]] as [number, string][]).forEach(([dir, label], i) => {
+        ([[1, "Upper FCL: 81"], [-1, "Lower FCL: 81"]] as [number, string][]).forEach(([dir, label], i) => {
           const delay = 3.5 + i * 0.25;
           const k = dir * P.fcl;
           s.band(L, R, at(k + 0.075), at(k - 0.075), { color: PO3.ink, op: 0.035, delay });
@@ -233,37 +245,72 @@ export const SPECS: Record<ChartKey, Spec> = {
 
   /* ---------- 02 GB Time: NQ 5m, New York ---------- */
   gbtime: {
-    seed: 60223, base: 20340, vol: 8.4, drift: 0, dec: 2,
-    t0: 7 * 60 + 30, step: 5, every: 12,
-    n: { lg: 62, sm: 42 },
+    seed: 60223, base: 20340, vol: 5.5, drift: 0, dec: 2,
+    t0: 7 * 60 + 30, step: 1, every: 12,
+    n: { lg: 80, sm: 46 },
     vpad: 0.13,
     padT: { lg: 34, sm: 22 },
     footer: { lg: 92, sm: 0 },
-    print: { step: 0.05, start: 0 },
-    // rises into the anchor, then works down through the sequence
-    swing: { path: [[0, 0.3], [0.47, 1], [0.92, -1], [1, -0.78]], amp: 9, chop: 1.5 },
-    alt: "NQ 5-minute chart with the GB Time sequence marked on price and the Algo 1, Algo 2 and Clock schedule listed below.",
+    print: { step: 0.035, start: 0 },
+    // Climbs in a staircase of higher lows into the anchor, holds near it
+    // through the sweep, then drops away sharply. The sequence marks bars 0,
+    // 3, 7, 14, 23, 29 and 44 after the anchor, and the shape puts a peak on
+    // each of them; shapeOne then guarantees it against the ripple.
+    swing: {
+      path: [
+        [0, -0.55], [0.05, -0.12], [0.085, -0.36], [0.14, 0.28], [0.175, 0.02],
+        [0.225, 0.66], [0.25, 0.44], [0.275, 1],
+        [0.295, 0.62], [0.3125, 0.93], [0.34, 0.58], [0.3625, 0.97],
+        [0.39, 0.05], [0.45, 0.5],
+        [0.485, -0.2], [0.5625, 0.26],
+        [0.585, -0.42], [0.6375, -0.04],
+        [0.685, -0.68], [0.73, -0.42], [0.765, -0.85], [0.825, -0.46],
+        [0.88, -0.92], [1, -0.98],
+      ],
+      amp: 9,
+      chop: 1.05,
+    },
+    alt: "NQ 1-minute chart with the GB Time sequence marked on price and the Algo 1, Algo 2 and Clock schedule listed below.",
     shapeOne(d, sp) {
       const n = d.length;
-      const anchor = hiIdx(d, Math.round(n * 0.35), Math.round(n * 0.58));
-      const sweep = anchor + 6; // the "7" in the sequence
+      // fixed, so every marked bar is known: searching for it let the ripple
+      // move the anchor and drag the whole sequence off its peaks
+      const anchor = Math.round(n * 0.275);
+      const sweep = anchor + GB_SWEEP;
       const hi = d[anchor].h;
 
       // nothing between the two touches the anchor high, so the sweep reads
       for (let i = anchor + 1; i < sweep; i++) capHigh(d, i, hi - sp.vol * 0.55);
 
       if (sweep < n) {
-        // the sweep bar runs the high and closes back underneath it
+        // the sweep bar runs the high by a little and closes back underneath
         const was = d[sweep].c;
         const b = d[sweep];
         b.o = d[sweep - 1].c;
-        b.h = hi + sp.vol * 0.95;
-        b.c = hi - sp.vol * 1.6;
-        b.l = b.c - sp.vol * 0.45;
+        b.h = hi + sp.vol * 0.32;
+        b.c = hi - sp.vol * 1.05;
+        b.l = b.c - sp.vol * 0.35;
         // carry the rejection through, so the tape stays continuous
         const drop = b.c - was;
         for (let i = sweep + 1; i < n; i++) shiftBar(d[i], drop);
         for (let i = sweep + 1; i < n; i++) capHigh(d, i, hi - sp.vol * 0.5);
+      }
+
+      // Every GB time has to sit on a swing high. Rather than lift the marked
+      // bars — which would fight the caps above — press their neighbours down,
+      // so each marked bar is the highest within two bars either side.
+      // Shift the neighbour down bodily rather than capping its high: capHigh
+      // pulls the open and close only part of the way, and the bar's own high
+      // is then restored to whichever of the three is highest, so a large cap
+      // does not bite.
+      const marked = new Set(GB_MARKS.map(([off]) => anchor + off));
+      for (const i of marked) {
+        if (i >= n) continue;
+        for (const j of [i - 2, i - 1, i + 1, i + 2]) {
+          if (j < 0 || j >= n || marked.has(j)) continue;
+          const excess = d[j].h - (d[i].h - sp.vol * 0.4);
+          if (excess > 0) shiftBar(d[j], -excess);
+        }
       }
       return { anchor, sweep, hi };
     },
@@ -275,21 +322,13 @@ export const SPECS: Record<ChartKey, Spec> = {
         color: GB.rule, w: 1, dash: "1 3", delay: 0.5,
       });
 
-      // --- swing marker just before the anchor ---
-      const sw = Math.max(0, anchor - 5);
-      s.line(p.x(sw) - p.slot * 1.6, p.y(p.data[sw].h) - 8, p.x(sw), p.y(p.data[sw].h) - 8, {
-        color: GB.x, w: 1, delay: 0.05 + sw * 0.05,
-      });
-      s.text(p.x(sw), p.y(p.data[sw].h) - 5, "×", {
-        anchor: "middle", color: GB.x, size: 9, delay: 0.05 + sw * 0.05,
-      });
-
       // --- each timing point appears as its candle prints ---
       const sweep: number = m.sweep;
-      GB_MARKS.forEach(([off, label, kind]) => {
+      const step = SPECS.gbtime.print!.step;
+      GB_MARKS.forEach(([off, kind]) => {
         const i = anchor + off;
         if (i >= p.n) return;
-        const delay = 0.15 + i * 0.05;
+        const delay = 0.15 + i * step;
         // the sweep bar carries the targeting mark, so its label steps up
         const lift = i === sweep ? 17 : 0;
         const top = p.y(p.data[i].h) - lift;
@@ -299,24 +338,20 @@ export const SPECS: Record<ChartKey, Spec> = {
             anchor: "middle", color, size: 9, delay,
           });
         }
-        s.text(p.x(i), top - 10, label, { anchor: "middle", color, size: 10.5, delay });
+        s.text(p.x(i), top - 10, String(off), { anchor: "middle", color, size: 10.5, delay });
       });
 
       // --- the anchor high, and the bar that takes it ---
       if (sweep < p.n) {
         const hiY = p.y(m.hi);
-        const seen = 0.15 + anchor * 0.05;      // the moment the 0 prints
-        const taken = 0.1 + sweep * 0.05;       // the moment the 7 prints
+        const seen = 0.15 + anchor * step;      // the moment the 0 prints
+        const taken = 0.1 + sweep * step;       // the moment the 7 prints
         s.line(p.x(anchor), hiY, p.x(sweep) + p.slot, hiY, { color: GB.x, w: 1.2, delay: seen });
-        s.text(p.x(anchor) - 6, hiY - 5, "Liquidity", {
-          anchor: "end", color: GB.x, size: 9, delay: seen + 0.2,
-        });
         // sniper mark on the bar that runs it
         const sx = p.x(sweep);
         const sy = p.y(p.data[sweep].h);
         s.corners(sx, sy, 11, { color: GB.x, late: false, delay: taken + 0.25 });
         s.node(sx, sy, { color: GB.x, late: false, delay: taken + 0.25 });
-        s.text(sx + 16, sy + 3, "swept", { color: GB.x, size: 9, delay: taken + 0.4 });
       }
 
       if (small) return;
