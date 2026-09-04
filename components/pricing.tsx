@@ -6,7 +6,7 @@ const INCLUDED = [
   "Quarterly Theory Cycles",
   "GB Time",
   "SMT Detection",
-  "QT SSMT & Hidden SSMT",
+  "QT SSMT Detection",
   "Sessions & Liquidity",
 ];
 

@@ -167,7 +167,7 @@ export const SPECS: Record<ChartKey, Spec> = {
     },
   },
 
-  /* ---------- 03 QT SSMT & Hidden SSMT: NQ / ES 5m ---------- */
+  /* ---------- 03 QT SSMT Detection: NQ / ES 5m ---------- */
   ssmt: {
     dual: true, labels: ["NQ", "ES"],
     seed: 44190, seed2: 78321,
