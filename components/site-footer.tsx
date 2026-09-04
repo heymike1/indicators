@@ -26,7 +26,7 @@ export function SiteFooter() {
         <div className="flex flex-wrap gap-14 pt-14 pb-11">
           <div className="flex flex-[1_1_340px] flex-col gap-4">
             <a href="#top" className="inline-flex items-center gap-2.5 text-sm font-medium tracking-[-0.01em]">
-              <LogoMark />
+              <LogoMark size={28} />
               Trading Indicators
             </a>
             <p className="max-w-[38ch] text-sm text-tx2">

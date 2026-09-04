@@ -27,7 +27,7 @@ export function SiteNav() {
     >
       <div className="mx-auto grid h-16 max-w-[1200px] grid-cols-[1fr_auto] items-center gap-4 px-8 md:grid-cols-[1fr_auto_1fr]">
         <a href="#top" className="inline-flex items-center gap-2.5 text-sm font-medium tracking-[-0.01em]">
-          <LogoMark />
+          <LogoMark size={36} />
           Trading Indicators
         </a>
 
