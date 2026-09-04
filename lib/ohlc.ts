@@ -33,6 +33,65 @@ export function series(seed: number, n: number, base: number, vol: number, drift
   return out;
 }
 
+/** Cosine ease between two values; flat at both ends, so segments joined
+ *  end-to-end stay smooth through the joins. */
+const ease = (from: number, to: number, u: number) =>
+  from + ((to - from) * (1 - Math.cos(Math.PI * Math.min(Math.max(u, 0), 1)))) / 2;
+
+/** A deliberate shape rather than a random walk. `path` is a list of
+ *  [position, level] waypoints — position 0→1 across the chart, level −1→1
+ *  across the price range — eased between, so the joins stay smooth. `amp`
+ *  is the full range in volatility units and `chop` scales the ripple and
+ *  noise riding on top. */
+export function swing(
+  seed: number,
+  n: number,
+  base: number,
+  vol: number,
+  {
+    path = [[0, 0.3], [0.12, 1], [0.62, -1], [1, 0]] as [number, number][],
+    amp = 9,
+    chop = 1,
+    noise = 0.95,
+  } = {}
+): Bar[] {
+  const r = rng(seed);
+  const out: Bar[] = [];
+  const half = (amp * vol) / 2;
+
+  const level = (t: number) => {
+    for (let i = 1; i < path.length; i++) {
+      if (t <= path[i][0]) {
+        const [t0, s0] = path[i - 1];
+        const [t1, s1] = path[i];
+        return ease(s0, s1, (t - t0) / (t1 - t0));
+      }
+    }
+    return path[path.length - 1][1];
+  };
+
+  for (let i = 0; i < n; i++) {
+    const s = level(i / (n - 1));
+    // three non-harmonic ripples plus noise, so the shape still reads as a
+    // market rather than a drawn curve
+    const ripple =
+      (Math.sin(i / 13.5 + 1) * 0.9 +
+        Math.sin(i / 5.5 + (seed % 7)) * 0.6 +
+        Math.sin(i / 3.1 + 2.3) * 0.35) *
+      vol *
+      chop;
+    const c = base + half * s + ripple + (r() - 0.5) * vol * noise * chop;
+    const o = i ? out[i - 1].c : c - (r() - 0.5) * vol * 0.4;
+    // squaring the draw keeps most wicks short and lets a few run long
+    out.push({
+      o, c,
+      h: Math.max(o, c) + r() * r() * vol * 1.3 * chop,
+      l: Math.min(o, c) - r() * r() * vol * 1.3 * chop,
+    });
+  }
+  return out;
+}
+
 /* --- shaping helpers: nudge bars so a setup is actually present --- */
 
 const fix = (b: Bar) => { b.h = Math.max(b.h, b.o, b.c); b.l = Math.min(b.l, b.o, b.c); };

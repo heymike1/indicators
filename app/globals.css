@@ -219,6 +219,14 @@
   94% { stroke-dashoffset: 0; opacity: 1 }
   100% { stroke-dashoffset: 0; opacity: 0 }
 }
+/* half-length draw, for a line that should land quickly */
+@keyframes cxDrawFast {
+  0% { stroke-dashoffset: 1; opacity: 0 }
+  2% { opacity: 1 }
+  11% { stroke-dashoffset: 0 }
+  94% { stroke-dashoffset: 0; opacity: 1 }
+  100% { stroke-dashoffset: 0; opacity: 0 }
+}
 @keyframes cxWipe {
   0% { transform: translateX(var(--wx, -100px)) }
   22%, 100% { transform: translateX(0) }
@@ -235,14 +243,58 @@
   from { transform: translateX(0) }
   to { transform: translateX(var(--sw, 900px)) }
 }
+/* candles printing left to right, like a replay on fast forward */
+@keyframes cxPrint {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+@keyframes cxPlayhead {
+  0% { transform: translateX(0); opacity: 0 }
+  6% { opacity: 1 }
+  90% { opacity: 1 }
+  100% { transform: translateX(var(--pw, 800px)); opacity: 0 }
+}
 
 .a-fade { opacity: 0; animation: cxFade 8s linear infinite; }
 .a-late { opacity: 0; animation: cxLate 8s linear infinite; }
-.a-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: cxDraw 8s linear infinite; }
+/* opacity in the base rule too: before its delay elapses a drawn line
+   should be plainly hidden, not merely offset out of view */
+.a-draw { opacity: 0; stroke-dasharray: 1; stroke-dashoffset: 1; animation: cxDraw 8s linear infinite; }
+.a-draw-fast { opacity: 0; stroke-dasharray: 1; stroke-dashoffset: 1; animation: cxDrawFast 8s linear infinite; }
 .a-wipe { animation: cxWipe 8s linear infinite; }
 .a-ping { transform-box: fill-box; transform-origin: center; animation: cxPing 2.4s ease-in-out infinite; }
 .a-ring { transform-box: fill-box; transform-origin: center; animation: cxRing 2.4s ease-out infinite; }
 .cx-sweep { animation: cxSweep var(--sd, 11s) linear infinite; }
+.a-print { opacity: 0; animation: cxPrint 0.42s ease-out forwards; }
+.a-playhead { opacity: 0; animation: cxPlayhead var(--pd, 3.4s) linear forwards; }
+
+/* A chart inside a scroll-revealed row holds its whole sequence until the
+   row is actually on screen, so the demonstration is caught from the start
+   (and nothing animates off-screen). */
+.reveal .a-fade,
+.reveal .a-late,
+.reveal .a-draw,
+.reveal .a-draw-fast,
+.reveal .a-wipe,
+.reveal .a-ping,
+.reveal .a-ring,
+.reveal .a-print,
+.reveal .a-playhead,
+.reveal .cx-sweep {
+  animation-play-state: paused;
+}
+.reveal[data-in="true"] .a-fade,
+.reveal[data-in="true"] .a-late,
+.reveal[data-in="true"] .a-draw,
+.reveal[data-in="true"] .a-draw-fast,
+.reveal[data-in="true"] .a-wipe,
+.reveal[data-in="true"] .a-ping,
+.reveal[data-in="true"] .a-ring,
+.reveal[data-in="true"] .a-print,
+.reveal[data-in="true"] .a-playhead,
+.reveal[data-in="true"] .cx-sweep {
+  animation-play-state: running;
+}
 
 /* scroll reveal (once, on intersection) */
 .reveal {
@@ -261,10 +313,13 @@
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .a-fade, .a-late { animation: none; opacity: 1; }
-  .a-draw { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; }
+  .a-draw,
+  .a-draw-fast { animation: none; opacity: 1; stroke-dasharray: none; stroke-dashoffset: 0; }
   .a-wipe { animation: none; transform: none; }
   .a-ping { animation: none; }
   .a-ring { animation: none; opacity: 0; }
+  .a-print { animation: none; opacity: 1; }
+  .a-playhead { display: none; }
   .cx-sweep { display: none; }
 
   /* Radix/tw-animate drive these; they are movement, so they stop too */

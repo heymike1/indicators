@@ -44,20 +44,24 @@ export function mkPanel(
 
 /* ---------- animation helpers ---------- */
 
-export type Anim = { draw?: boolean; late?: boolean; delay?: number };
+export type Anim = { draw?: boolean; fast?: boolean; late?: boolean; delay?: number };
 
 function animClass(o: Anim) {
-  return o.draw ? "a-draw" : o.late ? "a-late" : "a-fade";
+  if (o.draw) return o.fast ? "a-draw-fast" : "a-draw";
+  return o.late ? "a-late" : "a-fade";
 }
 function animStyle(o: Anim): CSSProperties | undefined {
   return o.delay ? { animationDelay: `${o.delay}s` } : undefined;
 }
 
+/** `color` paints an element in an indicator's own palette; without it the
+ *  element falls back to the site's charcoal/teal roles. */
 type StrokeOpts = Anim & {
-  acc?: boolean; w?: number; dash?: string; op?: number;
+  acc?: boolean; w?: number; dash?: string; op?: number; color?: string;
 };
 type TextOpts = Anim & {
   acc?: boolean; anchor?: "start" | "middle" | "end"; skipSmall?: boolean;
+  color?: string; size?: number;
 };
 
 /* ---------- the sketch builder ----------
@@ -86,7 +90,8 @@ export class Sketch {
         strokeDasharray={o.dash}
         strokeOpacity={o.op}
         pathLength={o.draw ? 1 : undefined}
-        className={`${o.acc ? "cx-acc" : "cx-line"} ${animClass(o)}`}
+        stroke={o.color}
+        className={`${o.color ? "" : o.acc ? "cx-acc" : "cx-line"} ${animClass(o)}`}
         style={animStyle(o)}
       />
     );
@@ -100,15 +105,18 @@ export class Sketch {
     this.path(`M${x1} ${y1}H${x2}V${y2}H${x1}Z`, o);
   }
 
-  /** Session / detection band. Painted behind the candles. */
-  band(x1: number, x2: number, y1: number, y2: number, o: Anim & { acc?: boolean; op?: number } = {}) {
+  /** Session / detection band. Painted behind the candles. Corners may be
+   *  given in either order: a zone below the mid-line arrives bottom-first,
+   *  which would otherwise collapse the rect to zero height. */
+  band(x1: number, x2: number, y1: number, y2: number, o: Anim & { acc?: boolean; op?: number; color?: string } = {}) {
     this.back.push(
       <rect
         key={this.key()}
-        x={x1} y={y1}
-        width={Math.max(0, x2 - x1)} height={Math.max(0, y2 - y1)}
+        x={Math.min(x1, x2)} y={Math.min(y1, y2)}
+        width={Math.abs(x2 - x1)} height={Math.abs(y2 - y1)}
         fillOpacity={o.op ?? 0.03}
-        className={`${o.acc ? "cx-accf" : "cx-inkf"} ${animClass(o)}`}
+        fill={o.color}
+        className={`${o.color ? "" : o.acc ? "cx-accf" : "cx-inkf"} ${animClass(o)}`}
         style={animStyle(o)}
       />
     );
@@ -121,8 +129,9 @@ export class Sketch {
         key={this.key()}
         x={x} y={y}
         textAnchor={o.anchor ?? "start"}
-        className={`chart-label ${o.acc ? "fill-acc" : ""} ${animClass(o)}`}
-        style={animStyle(o)}
+        fill={o.color}
+        className={`chart-label ${o.color ? "" : o.acc ? "fill-acc" : ""} ${animClass(o)}`}
+        style={o.size ? { ...animStyle(o), fontSize: `${o.size}px` } : animStyle(o)}
       >
         {str}
       </text>
@@ -130,7 +139,7 @@ export class Sketch {
   }
 
   /** Pulsing detection node, optionally inside an expanding ring. */
-  node(x: number, y: number, o: Anim & { ring?: boolean } = {}) {
+  node(x: number, y: number, o: Anim & { ring?: boolean; color?: string } = {}) {
     this.front.push(
       <g
         key={this.key()}
@@ -138,25 +147,26 @@ export class Sketch {
         style={animStyle(o)}
       >
         {o.ring !== false && (
-          <circle cx={x} cy={y} r={3} fill="none" strokeWidth={1} className="cx-acc a-ring" />
+          <circle cx={x} cy={y} r={3} fill="none" strokeWidth={1} stroke={o.color} className={`${o.color ? "" : "cx-acc"} a-ring`} />
         )}
-        <circle cx={x} cy={y} r={3} className="cx-accf a-ping" />
+        <circle cx={x} cy={y} r={3} fill={o.color} className={`${o.color ? "" : "cx-accf"} a-ping`} />
       </g>
     );
   }
 
   /** Four corner targeting ticks. */
-  corners(x: number, y: number, r: number, o: Anim = {}) {
+  corners(x: number, y: number, r: number, o: Anim & { color?: string } = {}) {
     const t = 4;
     this.front.push(
-      <g key={this.key()} className="a-late" style={animStyle(o)}>
+      <g key={this.key()} className={o.late === false ? "a-fade" : "a-late"} style={animStyle(o)}>
         {([[-1, -1], [1, -1], [-1, 1], [1, 1]] as const).map(([sx, sy], i) => {
           const px = x + sx * r, py = y + sy * r;
           return (
             <path
               key={i}
               d={`M${px - sx * t} ${py}H${px}V${py - sy * t}`}
-              fill="none" strokeWidth={1} className="cx-acc"
+              fill="none" strokeWidth={1} stroke={o.color}
+              className={o.color ? "" : "cx-acc"}
             />
           );
         })}
@@ -206,20 +216,27 @@ export class Sketch {
 
 /* ---------- base layers ---------- */
 
-export function GridAndAxis({ p, dec, ticks }: { p: Panel; dec: number; ticks: number }) {
+export function shiftBar(b: { o: number; h: number; l: number; c: number }, d: number) {
+  b.o += d; b.h += d; b.l += d; b.c += d;
+}
+
+export function GridAndAxis({
+  p, dec, ticks, xEnd,
+}: { p: Panel; dec: number; ticks: number; xEnd?: number }) {
+  const right = xEnd ?? p.right;
   const rows = Array.from({ length: ticks + 1 }, (_, k) => k);
   return (
     <g>
       {rows.map((k) => {
         const y = r2(p.top + (p.bot - p.top) * (k / ticks));
         return (
-          <line key={`l${k}`} x1={p.left} y1={y} x2={p.right} y2={y} stroke="var(--gridline)" strokeWidth={1} />
+          <line key={`l${k}`} x1={p.left} y1={y} x2={right} y2={y} stroke="var(--gridline)" strokeWidth={1} />
         );
       })}
       {rows.map((k) => {
         const y = r2(p.top + (p.bot - p.top) * (k / ticks));
         return (
-          <text key={`t${k}`} x={p.right + 8} y={y + 3.4} className="chart-axis">
+          <text key={`t${k}`} x={right + 8} y={y + 3.4} className="chart-axis">
             {money(p.max - (p.max - p.min) * (k / ticks), dec)}
           </text>
         );
@@ -228,7 +245,7 @@ export function GridAndAxis({ p, dec, ticks }: { p: Panel; dec: number; ticks: n
   );
 }
 
-export function Candles({ p }: { p: Panel }) {
+export function Candles({ p, print }: { p: Panel; print?: { step: number; start: number } }) {
   const bw = Math.max(1.4, Math.round(p.slot * 0.58 * 100) / 100);
   return (
     <g strokeWidth={1} stroke="var(--ink)">
@@ -245,6 +262,8 @@ export function Candles({ p }: { p: Panel }) {
             key={i}
             d={`M${cx} ${p.y(d.h)}V${p.y(d.l)}M${x0} ${yTop}H${x1}V${yBot}H${x0}Z`}
             fill={d.c >= d.o ? "var(--surface)" : "var(--ink)"}
+            className={print ? "a-print" : undefined}
+            style={print ? { animationDelay: `${(print.start + i * print.step).toFixed(2)}s` } : undefined}
           />
         );
       })}
