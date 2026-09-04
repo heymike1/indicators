@@ -34,7 +34,7 @@ export function Hero() {
         <div className="mt-11 sm:mt-16">
           <ChartFrame
             chart="hero"
-            symbol="NQ1! · 5"
+            symbol="NQ1! · 5m"
             names={["PO3 Ranges", "GB Time", "Sessions & Liquidity", "SMT"]}
             status="SCANNING"
           />

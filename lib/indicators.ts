@@ -28,8 +28,8 @@ export const INDICATORS: Indicator[] = [
     description:
       "Plot single or multiple ranges across markets and timeframes, fully customisable.",
     bullets: ["Single or stacked ranges", "Any timeframe, any market", "Range highs, lows and equilibrium"],
-    symbol: "ES1! · 15",
-    detail: "PO3: 729",
+    symbol: "NQ1! · 1m",
+    detail: "PO3: 243",
   },
   {
     num: "02",
@@ -40,7 +40,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "Our GB Time indicator automatically plots the sequence for you, to help you anticipate turning points.",
     bullets: ["Full sequence, plotted ahead of price", "Active window highlighted as it forms", "Timezone aware"],
-    symbol: "NQ1! · 5",
+    symbol: "NQ1! · 1m",
     detail: "New York",
   },
   {
@@ -52,7 +52,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "Spot SSMT between current and previous cycles across different markets and timeframes.",
     bullets: ["Intraday and cycle-level relationships", "Hidden SSMT flagged separately", "Any correlated pair"],
-    symbol: "ES1! · 5",
+    symbol: "ES1! · 5m",
     detail: "90M → Nano",
   },
   {
@@ -64,7 +64,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "Customisable indicator covering every cycle and quarter within Quarterly Theory.",
     bullets: ["Nested cycles, quarters and sub-quarters", "True opens marked", "Show or hide any level of the hierarchy"],
-    symbol: "ES1! · 5",
+    symbol: "ES1! · 5m",
     detail: "90m · 22.5m",
   },
   {
@@ -76,7 +76,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "See SMT forming between lower timeframe and higher timeframe sessions and intervals, across different markets and timeframes.",
     bullets: ["10m · 30m · 90m · HTF", "Highs and lows, flagged as they confirm", "Choose the comparison market"],
-    symbol: "NQ1! / ES1! · 5",
+    symbol: "NQ1! / ES1! · 5m",
     detail: "",
   },
   {
@@ -88,7 +88,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "See 30 and 90-minute cycles, sessions, killzones and liquidity.",
     bullets: ["30m and 90m sessions", "Forex Killzones", "Session highs and lows tracked until swept"],
-    symbol: "EURUSD · 15",
+    symbol: "EURUSD · 15m",
     detail: "Killzones on",
   },
 ];
