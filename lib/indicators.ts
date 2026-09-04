@@ -29,7 +29,7 @@ export const INDICATORS: Indicator[] = [
       "Plot single or multiple ranges across markets and timeframes, fully customisable.",
     bullets: ["Single or stacked ranges", "Any timeframe, any market", "Range highs, lows and equilibrium"],
     symbol: "ES1! · 15",
-    detail: "3 ranges",
+    detail: "PO3: 729",
   },
   {
     num: "02",
@@ -52,8 +52,8 @@ export const INDICATORS: Indicator[] = [
     description:
       "Spot SSMT between current and previous cycles across different markets and timeframes.",
     bullets: ["Intraday and cycle-level relationships", "Hidden SSMT flagged separately", "Any correlated pair"],
-    symbol: "NQ1! / ES1! · 5",
-    detail: "Q2 → Q2",
+    symbol: "ES1! · 5",
+    detail: "90M → Nano",
   },
   {
     num: "04",
