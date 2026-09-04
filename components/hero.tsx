@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Kicker } from "@/components/kicker";
 import { ChartFrame } from "@/components/chart-frame";
 import { CheckoutButton } from "@/components/checkout-button";
 
@@ -8,8 +7,6 @@ export function Hero() {
     <section className="pt-[116px] sm:pt-[152px]">
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="mx-auto flex max-w-[720px] flex-col items-center gap-[22px] text-center">
-          <Kicker>TradingView indicators</Kicker>
-
           <h1 className="text-[clamp(34px,6.6vw,60px)] leading-[1.06] font-semibold tracking-[-0.028em]">
             Spend less time marking charts.
           </h1>
