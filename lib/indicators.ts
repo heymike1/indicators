@@ -64,7 +64,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "Customisable indicator covering every cycle and quarter within Quarterly Theory.",
     bullets: ["Nested cycles, quarters and sub-quarters", "True opens marked", "Show or hide any level of the hierarchy"],
-    symbol: "ES1! · 5m",
+    symbol: "ES1! · 1m",
     detail: "90m · 22.5m",
   },
   {

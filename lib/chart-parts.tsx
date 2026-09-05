@@ -245,8 +245,10 @@ export function GridAndAxis({
   );
 }
 
-export function Candles({ p, print }: { p: Panel; print?: { step: number; start: number } }) {
-  const bw = Math.max(1.4, Math.round(p.slot * 0.58 * 100) / 100);
+export function Candles({
+  p, print, body = 0.58,
+}: { p: Panel; print?: { step: number; start: number }; body?: number }) {
+  const bw = Math.max(1.4, Math.round(p.slot * body * 100) / 100);
   return (
     <g strokeWidth={1} stroke="var(--ink)">
       {p.data.map((d, i) => {
