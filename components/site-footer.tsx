@@ -38,6 +38,22 @@ export function SiteFooter() {
               TradingView indicators built to automate time, price, liquidity
               and market relationship analysis.
             </p>
+            <a
+              href="https://x.com/interbankguy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-fit items-center gap-2 text-[13.5px] text-tx2 transition-colors hover:text-foreground"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-[13px] shrink-0 fill-current"
+                aria-hidden="true"
+              >
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              @interbankguy
+              <span className="sr-only"> on X (opens in a new tab)</span>
+            </a>
           </div>
 
           <div className="flex flex-[1_1_300px] flex-wrap justify-start gap-12 sm:gap-16 lg:justify-end">
