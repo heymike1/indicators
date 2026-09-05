@@ -78,7 +78,7 @@ export function SiteFooter() {
         </div>
 
         <div id="disclaimer" className="border-t border-snow/25 pt-[22px] pb-11">
-          <p className="mb-6 w-fit rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-brand">
+          <p className="mb-6 w-fit rounded-full bg-sky px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-brand">
             We do not provide education or training.
           </p>
           <div className="flex flex-wrap items-start gap-10">

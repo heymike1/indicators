@@ -48,7 +48,7 @@
   --radius-4xl: var(--radius);
   --color-acc: var(--acc);
   --color-brand: var(--brand);
-  --color-lime: var(--lime);
+  --color-sky: var(--sky);
   --color-snow: var(--snow);
   --color-stone: var(--stone);
   --color-ink: var(--ink);
@@ -63,11 +63,12 @@
 :root {
   /* ---- Seed structure, on a blue pillar ---------------------------
      Seed's shape is kept: one chromatic pillar, one warm neutral canvas
-     and one accent that only ever appears at badge size. The pillar is
-     the brand blue rather than a green, and it stays a brand colour —
+     and one accent that only ever appears at badge size. The pillar and
+     the accent are both blue now, a shade apart, and the pillar stays a
+     brand colour —
      body copy and the charts keep their own neutrals below. */
   --brand: #03438c;            /* the primary: CTAs, dark bands, marks */
-  --lime: #d3fa99;             /* the accent, badge-sized only */
+  --sky: #a8d1f7;              /* the accent, badge-sized only */
   --snow: #fcfcf7;             /* Seed's warm canvas, never pure white */
   --stone: #eeeee9;
   --frost: #c4c7c4;
@@ -184,7 +185,7 @@
     border-radius: 3px;
   }
   ::selection {
-    background: var(--lime);
+    background: var(--sky);
     color: var(--brand);
   }
 }

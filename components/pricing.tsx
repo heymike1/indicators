@@ -35,7 +35,7 @@ export function Pricing() {
             </p>
 
             <p className="mt-6 flex items-center gap-4">
-              <span className="rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-brand">
+              <span className="rounded-full bg-sky px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-brand">
                 FOREVER
               </span>
               <span className="h-px flex-1 bg-snow/25" aria-hidden="true" />
