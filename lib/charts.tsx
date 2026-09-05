@@ -36,6 +36,9 @@ const QT_CYCLES: [string, number][] = [
   ["NYAM Q4", 3],
 ];
 
+/** SMT Detection separates the shorter cycles from the 90-minute one. */
+const SMT = { small: "#3d7fbf" };
+
 /** QT SSMT draws its cycle comparison in a single violet. */
 const QT = { line: "#6d5bd0", rule: "#c9ccc6" };
 
@@ -588,45 +591,106 @@ export const SPECS: Record<ChartKey, Spec> = {
     },
   },
 
-  /* ---------- 05 SMT Detection: NQ / ES 5m ---------- */
+  /* ---------- 05 SMT Detection: several timeframes at once ---------- */
   smt: {
-    dual: true, labels: ["NQ", "ES"],
-    seed: 55832, seed2: 21470,
-    base: 20268, base2: 5666.25, vol: 8.6, vol2: 2.5, drift: -0.2, dec: 2, dec2: 2,
-    t0: 10 * 60, step: 5, every: 12,
-    n: { lg: 60, sm: 40 },
-    alt: "NQ and ES 5-minute panels inside a 90-minute window, with SMT flagged between the two lows.",
-    shapeTwo(a, b, sp) {
-      const n = a.length;
-      const e = Math.round(n * 0.5), l = Math.round(n * 0.83);
-      const aE = a[e].l, bE = b[e].l;
-      for (let i = 0; i < n; i++) if (i !== e && i !== l) raiseLow(a, i, aE + sp.vol * 0.55);
-      for (let i = 0; i < n; i++) if (i !== e && i !== l) raiseLow(b, i, bE + sp.vol2! * 0.55);
-      dropLow(a, l, aE - sp.vol * 0.7);      // NQ takes the low out
-      raiseLow(a, l, aE - sp.vol * 0.8);
-      raiseLow(b, l, bE + sp.vol2! * 0.7);   // ES holds
-      dropLow(b, l, bE + sp.vol2! * 0.6);
-      return { e, l };
+    seed: 55832, base: 29480, vol: 9, drift: 0, dec: 2,
+    t0: 9 * 60 + 30, step: 1, every: 20,
+    n: { lg: 100, sm: 58 },
+    vpad: 0.12,
+    padT: { lg: 26, sm: 18 },
+    body: 0.66,
+    print: { step: 0.022, start: 0 },
+    swing: {
+      path: [
+        [0, -0.75], [0.02, -0.89], [0.05, -0.45], [0.07, -0.69],
+        [0.105, -0.26], [0.135, -0.04], [0.165, 0.24], [0.195, 0.49],
+        [0.225, 0.6], [0.268, 1],
+        [0.3, 0.76], [0.325, 0.41], [0.35, 0.54], [0.38, 0.04], [0.4, -0.26],
+        [0.435, -1], [0.465, -0.65], [0.495, -0.93], [0.525, -0.54], [0.545, -0.37],
+        [0.575, -0.2], [0.6, -0.34], [0.63, -0.1], [0.648, -0.32],
+        [0.665, 0.19], [0.68, 0.02], [0.695, -0.3],
+        [0.72, -0.12], [0.75, -0.02], [0.78, 0.18], [0.81, 0.49], [0.845, 0.87],
+        [0.87, 0.49], [0.9, 0.22], [0.925, 0.04], [0.95, -0.15], [0.98, -0.04], [1, 0],
+      ],
+      amp: 9,
+      chop: 0.95,
     },
-    draw(ps: Panel[], s, small, W, H, m) {
-      const wx1 = ps[0].x(m.e) - ps[0].slot * 2;
-      const wx2 = ps[0].x(m.l) + ps[0].slot * 2;
-      s.band(wx1, wx2, ps[0].boxTop, ps[1].boxBot, { acc: true, op: 0.04, delay: 0.3 });
-      s.text(wx1 + 6, ps[0].boxTop + 13, "90m", { acc: true, delay: 0.5, skipSmall: true });
+    alt: "NQ 1-minute chart with SMT flagged on the 90-minute highs and lows at once, and on a 30- and 10-minute swing low.",
+    shapeOne(d, sp) {
+      const n = d.length;
+      const at = (f: number, w: number, hi: boolean) => {
+        const a = Math.max(0, Math.round(n * (f - w)));
+        const b = Math.min(n - 1, Math.round(n * (f + w)));
+        return hi ? hiIdx(d, a, b) : loIdx(d, a, b);
+      };
+      const m = {
+        hiA: at(0.3, 0.03, true),
+        hiB: at(0.845, 0.03, true),
+        loA: at(0.02, 0.03, false),
+        loB: at(0.435, 0.06, false),
+        midA: at(0.6, 0.025, false),
+        midB: at(0.695, 0.025, false),
+        nearA: at(0.648, 0.015, false),
+      };
+      // Each pair has to diverge by a definite amount. The ripple riding on
+      // the shape is worth more than these gaps, so set them here rather than
+      // hoping the shape lands right: the 90m makes a higher high and a lower
+      // low, while the smaller swing holds a higher low.
+      liftHigh(d, m.hiB, d[m.hiA].h + sp.vol * 0.55);
+      capHigh(d, m.hiB, d[m.hiA].h + sp.vol * 0.75);
+      dropLow(d, m.loB, d[m.loA].l - sp.vol * 0.5);
+      raiseLow(d, m.loB, d[m.loA].l - sp.vol * 1.8);
+      raiseLow(d, m.midB, d[m.midA].l + sp.vol * 0.35);
+      dropLow(d, m.midB, d[m.midA].l + sp.vol * 0.55);
+      // Clamping an anchor can leave a neighbour poking past it, which reads
+      // as the line missing the very swing it is drawn from. Push the bars
+      // beside each anchor clear of it. These only ever move a neighbour away
+      // from the anchor, so overlapping windows compose without fighting.
+      const clear = (i: number, hi: boolean, w: number) => {
+        const gap = sp.vol * 0.12;
+        for (let j = Math.max(0, i - w); j <= Math.min(n - 1, i + w); j++) {
+          if (j === i) continue;
+          const over = hi ? d[j].h - (d[i].h - gap) : d[i].l + gap - d[j].l;
+          if (over > 0) shiftBar(d[j], hi ? -over : over);
+        }
+      };
+      clear(m.hiA, true, 5); clear(m.hiB, true, 5);
+      clear(m.loA, false, 4); clear(m.loB, false, 5);
+      clear(m.midA, false, 3); clear(m.nearA, false, 3); clear(m.midB, false, 3);
+      return m;
+    },
+    draw(p: Panel, s, small, W, H, m) {
+      const printed = p.n * SPECS.smt.print!.step + 0.4;
+      const link = (
+        a: number, b: number, hi: boolean, color: string,
+        label: string, delay: number, dy: number
+      ) => {
+        const ay = hi ? p.y(p.data[a].h) : p.y(p.data[a].l);
+        const by = hi ? p.y(p.data[b].h) : p.y(p.data[b].l);
+        s.line(p.x(a), ay, p.x(b), by, { color, w: 1.3, draw: true, fast: true, delay });
+        s.text((p.x(a) + p.x(b)) / 2, (ay + by) / 2 + dy, label, {
+          anchor: "middle", color, size: 9.5, delay: delay + 0.35, skipSmall: true,
+        });
+      };
 
-      ps.forEach((p, k) => {
-        const y1 = p.y(p.data[m.e].l), y2 = p.y(p.data[m.l].l);
-        const top = Math.min(y1, y2) - 14, bot = Math.max(y1, y2) + 18;
-        s.wipe(
-          { x: p.x(m.e) - 6, y: top, w: p.x(m.l) - p.x(m.e) + 12, h: bot - top },
-          1.3 + k * 0.5,
-          <path d={`M${p.x(m.e)} ${y1}L${p.x(m.l)} ${y2}`} fill="none" strokeWidth={1.2} strokeDasharray="4 3" className="cx-acc" />
-        );
+      // the 90-minute structure, on both sides of the range at once
+      link(m.hiA, m.hiB, true, QT.line, "90M NQ1!", printed, -9);
+      link(m.loA, m.loB, false, QT.line, "90M NQ1!", printed + 0.15, 15);
+
+      // and the smaller swing, where two shorter cycles run the same low.
+      // Its label clears the deeper of the two blue lines rather than
+      // sitting on the midpoint, where the 10M line would run through it.
+      link(m.midA, m.midB, false, SMT.small, "30M + 10M NQ1!", printed + 0.35,
+        p.y(p.data[m.nearA].l) - (p.y(p.data[m.midA].l) + p.y(p.data[m.midB].l)) / 2 + 16);
+      s.line(p.x(m.nearA), p.y(p.data[m.nearA].l), p.x(m.midB), p.y(p.data[m.midB].l), {
+        color: SMT.small, w: 1.1, draw: true, fast: true, delay: printed + 0.5,
+      });
+      s.text(p.x(m.midB) + 8, p.y(p.data[m.midB].l) + 4, "10M NQ1!", {
+        color: SMT.small, size: 9.5, delay: printed + 0.75, skipSmall: true,
       });
 
-      s.text(ps[0].x(m.l) + 10, ps[0].y(ps[0].data[m.l].l) + 12, "LL", { acc: true, late: true });
-      s.text(ps[1].x(m.l) + 10, ps[1].y(ps[1].data[m.l].l) + 12, "HL · SMT", { acc: true, late: true });
-      s.node(ps[1].x(m.l), ps[1].y(ps[1].data[m.l].l));
+      // flagged as the last of them confirms
+      s.node(p.x(m.hiB), p.y(p.data[m.hiB].h), { color: QT.line, late: false, delay: printed + 0.6 });
     },
   },
 

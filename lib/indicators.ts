@@ -76,7 +76,7 @@ export const INDICATORS: Indicator[] = [
     description:
       "See SMT forming between lower timeframe and higher timeframe sessions and intervals, across different markets and timeframes.",
     bullets: ["10m · 30m · 90m · HTF", "Highs and lows, flagged as they confirm", "Choose the comparison market"],
-    symbol: "NQ1! / ES1! · 5m",
+    symbol: "NQ1! · 1m",
     detail: "",
   },
   {
