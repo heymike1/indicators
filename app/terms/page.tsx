@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of Service" lastUpdated="Mar 23, 2026">
+    <LegalPage title="Terms of Service" lastUpdated="Aug 22, 2026">
       <h2>Terms and Conditions</h2>
       <p>
         This Terms and Conditions shall govern your use of our platform. By

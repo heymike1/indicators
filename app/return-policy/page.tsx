@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ReturnPolicyPage() {
   return (
-    <LegalPage title="Return Policy" lastUpdated="Mar 23, 2026">
+    <LegalPage title="Return Policy" lastUpdated="Aug 22, 2026">
       <p>
         <strong>Digital Goods – No Returns</strong>
       </p>

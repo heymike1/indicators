@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function EulaPage() {
   return (
-    <LegalPage title="EULA" lastUpdated="Mar 23, 2026">
+    <LegalPage title="EULA" lastUpdated="Aug 22, 2026">
       <h2>1. License Grant</h2>
       <p>
         Trading Indicators grants you a{" "}
