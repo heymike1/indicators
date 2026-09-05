@@ -30,7 +30,7 @@ function Media({ src, alt }: { src: string; alt: string }) {
 
 export function ChartFrame({ chart, size = "lg", symbol, names, status, chips, media }: Props) {
   return (
-    <figure className="overflow-hidden rounded-md border border-hair bg-card">
+    <figure className="overflow-hidden rounded-2xl border border-hair bg-card">
       <figcaption className="flex items-center justify-between gap-4 border-b border-hair px-3.5 py-[11px] font-mono text-[11px] leading-none text-tx4">
         <span className="flex min-w-0 flex-wrap items-center gap-3">
           <span className="font-medium text-foreground">{symbol}</span>
@@ -46,8 +46,8 @@ export function ChartFrame({ chart, size = "lg", symbol, names, status, chips, m
                 key={c.label}
                 className={
                   c.on
-                    ? "rounded-sm border border-acc px-1.5 py-[3px] leading-none text-acc"
-                    : "rounded-sm border border-hair px-1.5 py-[3px] leading-none text-tx3"
+                    ? "rounded-full border border-brand px-2 py-[4px] leading-none text-brand"
+                    : "rounded-full border border-hair px-2 py-[4px] leading-none text-tx3"
                 }
               >
                 {c.label}
