@@ -33,7 +33,7 @@ export function SiteNav() {
           className="inline-flex items-center gap-2.5 text-sm font-medium tracking-[-0.01em]"
         >
           <LogoMark size={36} />
-          Trading Indicators
+          243 Trading
         </Link>
 
         <nav

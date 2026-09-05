@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "Return Policy - Trading Indicators",
-  description: "Return Policy for Trading Indicators digital goods.",
+  title: "Return Policy - 243 Trading",
+  description: "Return Policy for 243 Trading digital goods.",
 };
 
 export default function ReturnPolicyPage() {
@@ -13,7 +13,7 @@ export default function ReturnPolicyPage() {
         <strong>Digital Goods – No Returns</strong>
       </p>
       <p>
-        All Trading Indicators products and services are <strong>digital goods</strong> delivered immediately upon
+        All 243 Trading products and services are <strong>digital goods</strong> delivered immediately upon
         purchase.
       </p>
 

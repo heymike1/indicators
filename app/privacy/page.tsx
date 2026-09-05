@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - Trading Indicators",
+  title: "Privacy Policy - 243 Trading",
   description:
-    "Privacy Policy for Trading Indicators - how we collect, use, and protect your information.",
+    "Privacy Policy for 243 Trading - how we collect, use, and protect your information.",
 };
 
 export default function PrivacyPage() {
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
       </p>
       <p>
         This Policy is a legally binding agreement between you (“User”, “you” or
-        “your”) and Funded Gallery (doing business as “Trading Indicators”,
+        “your”) and Funded Gallery (doing business as “243 Trading”,
         “we”, “us” or “our”). If you are entering into this Policy on behalf of
         a business or other legal entity, you represent that you have the
         authority to bind such entity to this Policy, in which case the terms
