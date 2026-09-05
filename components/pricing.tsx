@@ -14,7 +14,7 @@ export function Pricing() {
   return (
     <section
       id="pricing"
-      className="mt-[110px] scroll-mt-24 bg-forest py-[96px] text-snow sm:mt-[150px]"
+      className="mt-[110px] scroll-mt-24 bg-brand py-[96px] text-snow sm:mt-[150px]"
     >
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="flex flex-wrap gap-10 lg:gap-16">
@@ -35,7 +35,7 @@ export function Pricing() {
             </p>
 
             <p className="mt-6 flex items-center gap-4">
-              <span className="rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-forest">
+              <span className="rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-brand">
                 FOREVER
               </span>
               <span className="h-px flex-1 bg-snow/25" aria-hidden="true" />
@@ -58,7 +58,7 @@ export function Pricing() {
             <div className="mt-9 flex flex-col items-start gap-3.5">
               <CheckoutButton
                 label="Get Access for $29/month"
-                className="h-[52px] w-full max-w-[340px] rounded-full bg-snow px-7 text-base font-normal text-forest hover:bg-snow/90"
+                className="h-[52px] w-full max-w-[340px] rounded-full bg-snow px-7 text-base font-normal text-brand hover:bg-snow/90"
               />
               <p className="font-mono text-[12px] tracking-[0.015em] text-snow/60">
                 Cancel anytime. Subscription managed through TradeUniv. Indicators delivered on TradingView.

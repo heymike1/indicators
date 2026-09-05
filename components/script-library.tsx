@@ -66,9 +66,9 @@ export function ScriptLibrary() {
                   href={`#${ind.slug}`}
                   className="group flex flex-col rounded-2xl focus-visible:outline-none"
                 >
-                  <Card className="flex-1 gap-0 rounded-2xl border border-hair py-0 shadow-none ring-0 transition-colors duration-200 group-hover:border-forest">
+                  <Card className="flex-1 gap-0 rounded-2xl border border-hair py-0 shadow-none ring-0 transition-colors duration-200 group-hover:border-brand">
                     <div className="relative border-b border-hair">
-                      <span className="absolute top-2.5 left-2.5 z-[2] rounded-full border-[1.5px] border-forest bg-snow px-2 py-[5px] font-mono text-[10px] leading-none font-medium tracking-[0.015em] text-forest">
+                      <span className="absolute top-2.5 left-2.5 z-[2] rounded-full border-[1.5px] border-brand bg-snow px-2 py-[5px] font-mono text-[10px] leading-none font-medium tracking-[0.015em] text-brand">
                         {ind.category.toUpperCase()}
                       </span>
                       <ChartSvg chart={ind.chart} size="sm" />

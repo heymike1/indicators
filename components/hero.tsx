@@ -21,7 +21,7 @@ export function Hero() {
               label="Get Access"
               className="h-[52px] rounded-full px-6 text-base font-normal"
             />
-            <Button asChild size="lg" variant="outline" className="h-[52px] rounded-full border-[1.5px] border-forest bg-snow px-6 text-base font-normal hover:bg-transparent">
+            <Button asChild size="lg" variant="outline" className="h-[52px] rounded-full border-[1.5px] border-brand bg-snow px-6 text-base font-normal hover:bg-transparent">
               <a href="#indicators">Explore Indicators</a>
             </Button>
           </div>

@@ -46,7 +46,7 @@ export function ChartFrame({ chart, size = "lg", symbol, names, status, chips, m
                 key={c.label}
                 className={
                   c.on
-                    ? "rounded-full border border-forest px-2 py-[4px] leading-none text-forest"
+                    ? "rounded-full border border-brand px-2 py-[4px] leading-none text-brand"
                     : "rounded-full border border-hair px-2 py-[4px] leading-none text-tx3"
                 }
               >

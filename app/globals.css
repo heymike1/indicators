@@ -47,10 +47,8 @@
   --radius-3xl: var(--radius);
   --radius-4xl: var(--radius);
   --color-acc: var(--acc);
-  --color-forest: var(--forest);
+  --color-brand: var(--brand);
   --color-lime: var(--lime);
-  --color-sage: var(--sage);
-  --color-euc: var(--euc);
   --color-snow: var(--snow);
   --color-stone: var(--stone);
   --color-ink: var(--ink);
@@ -63,34 +61,31 @@
 }
 
 :root {
-  /* ---- Seed palette ----------------------------------------------
-     One chromatic pillar (Forest Depths), one warm neutral (Snow White)
-     and one accent (Lime Pulse) that only ever appears at badge size.
-     The site's own roles are mapped onto it below, so every component
-     and every chart keeps reading from the names it already used. */
-  --forest: #1c3a13;
-  --lime: #d3fa99;
-  --sage: #757c5d;
-  --olive: #9f995b;
-  --euc: #698e79;
-  --snow: #fcfcf7;
+  /* ---- Seed structure, on a blue pillar ---------------------------
+     Seed's shape is kept: one chromatic pillar, one warm neutral canvas
+     and one accent that only ever appears at badge size. The pillar is
+     the brand blue rather than a green, and it stays a brand colour —
+     body copy and the charts keep their own neutrals below. */
+  --brand: #03438c;            /* the primary: CTAs, dark bands, marks */
+  --lime: #d3fa99;             /* the accent, badge-sized only */
+  --snow: #fcfcf7;             /* Seed's warm canvas, never pure white */
   --stone: #eeeee9;
   --frost: #c4c7c4;
-  --ash: #b3b3b3;
-  --pewter: #666666;
 
-  --acc: var(--euc);           /* chart accent: session bands, live dot */
-  --ink: var(--forest);        /* candle ink */
+  --acc: var(--brand);         /* chart accent: session bands, live dot */
+
+  /* Text and chart chrome are the site's own neutrals, untouched by the
+     restyle: the charts read exactly as they always did. */
+  --ink: #2b2f36;              /* candle charcoal */
   --page: var(--snow);
-  --surface: var(--snow);
-  --hair: var(--stone);
-  --hair-hi: var(--frost);
-  --gridline: #f0f0ea;         /* one step under the separator, so the
-                                  grid never competes with the candles */
-  --tx: var(--forest);
-  --tx2: var(--pewter);
-  --tx3: var(--sage);
-  --tx4: var(--sage);
+  --surface: #ffffff;
+  --hair: #e3e4e1;
+  --hair-hi: #b9bdb7;
+  --gridline: #efefec;
+  --tx: #15171a;
+  --tx2: #6b7078;
+  --tx3: #7a7f87;
+  --tx4: #8d929a;
 
   /* ---- shadcn tokens mapped onto the brand ---- */
   --background: var(--page);
@@ -99,8 +94,8 @@
   --card-foreground: var(--tx);
   --popover: var(--surface);
   --popover-foreground: var(--tx);
-  --primary: var(--tx);
-  --primary-foreground: var(--page);
+  --primary: var(--brand);
+  --primary-foreground: var(--snow);
   --secondary: var(--stone);
   --secondary-foreground: var(--tx);
   --muted: var(--stone);
@@ -110,7 +105,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: var(--hair);
   --input: var(--hair);
-  --ring: var(--forest);
+  --ring: var(--brand);
   --radius: 1rem;              /* Seed cards; buttons and badges go full */
 }
 
@@ -148,27 +143,27 @@
 .legal li { margin-top: 8px; }
 .legal li::marker { color: var(--tx4); }
 .legal a {
-  color: var(--forest);
+  color: var(--brand);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.legal a:hover { color: var(--sage); }
+.legal a:hover { color: var(--tx); }
 
 /* ----------------------------------------------------------------
    Optional AA contrast mode.
 
-   The Seed palette above is the specified one. Two of its tones sit
-   below WCAG AA 4.5:1 for normal-size text on Snow White — Sage Moss
-   (4.24:1), which carries captions and chart axes, and Eucalyptus
-   (3.54:1), the chart accent. Set data-contrast="aa" on <html> to swap
-   in the same hues darkened to pass; nothing else about the design
-   changes. Forest Depths (12.3:1) and Pewter (5.56:1) already clear it.
+   Two of the site's muted greys sit below WCAG AA 4.5:1 for normal-size
+   text on the canvas — #7a7f87 (3.76:1) and #8d929a (2.92:1) — which
+   Lighthouse flags. Set data-contrast="aa" on <html> to swap in the same
+   hues darkened to pass; nothing else about the design changes. The
+   brand blue needs no override: it reads 9.34:1 on Snow White, and
+   carries a full text hierarchy on its own dark bands (5.40:1 at 70%).
    (SVG chart axis labels keep the lighter tone either way — axe does not
    audit SVG text, and a dark axis fights the candles.)
    ---------------------------------------------------------------- */
 :root[data-contrast="aa"] {
-  --sage: #6a7052;
-  --euc: #55735f;
+  --tx3: #6d7178;
+  --tx4: #6e7278;
 }
 
 @layer base {
@@ -184,13 +179,13 @@
     font-variant-numeric: tabular-nums;
   }
   :focus-visible {
-    outline: 2px solid var(--forest);
+    outline: 2px solid var(--brand);
     outline-offset: 3px;
     border-radius: 3px;
   }
   ::selection {
     background: var(--lime);
-    color: var(--forest);
+    color: var(--brand);
   }
 }
 

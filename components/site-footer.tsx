@@ -23,7 +23,7 @@ const COLS: { label: string; links: { href: string; label: string }[] }[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-[110px] bg-forest pb-4 text-snow sm:mt-[150px]">
+    <footer className="mt-[110px] bg-brand pb-4 text-snow sm:mt-[150px]">
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="flex flex-wrap gap-14 pt-14 pb-11">
           <div className="flex flex-[1_1_340px] flex-col gap-4">
@@ -78,7 +78,7 @@ export function SiteFooter() {
         </div>
 
         <div id="disclaimer" className="border-t border-snow/25 pt-[22px] pb-11">
-          <p className="mb-6 w-fit rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-forest">
+          <p className="mb-6 w-fit rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-brand">
             We do not provide education or training.
           </p>
           <div className="flex flex-wrap items-start gap-10">
