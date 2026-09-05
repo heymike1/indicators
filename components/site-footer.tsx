@@ -78,8 +78,8 @@ export function SiteFooter() {
         </div>
 
         <div id="disclaimer" className="border-t border-hair pt-[22px] pb-11">
-          <p className="mb-7 w-fit rounded-[5px] border border-warn/40 bg-warn/[0.06] px-3 py-2 text-xs leading-[1.6] font-medium text-warn">
-            We do not provide education.
+          <p className="mb-6 text-xs leading-[1.6] text-warn/80">
+            We do not provide education or training.
           </p>
           <div className="flex flex-wrap items-start gap-10">
             <p className="shrink-0 text-xs leading-[1.6] text-tx4">

@@ -129,11 +129,11 @@ export default function TermsPage() {
 
       <h2>No Education or Training Provided</h2>
       <p>
-        We do not provide education. Your subscription gives you access to the
-        indicators themselves and nothing further. It does not include courses,
-        lessons, mentoring, coaching, signals, trade calls, a community, or any
-        other form of training or instruction, and no such service is promised
-        or implied anywhere on this platform.
+        We do not provide education or training. Your subscription gives you
+        access to the indicators themselves and nothing further. It does not
+        include courses, lessons, mentoring, coaching, signals, trade calls, a
+        community, or any other form of training or instruction, and no such
+        service is promised or implied anywhere on this platform.
       </p>
       <p>
         Documentation covering how an indicator is installed, configured and

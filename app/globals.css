@@ -149,6 +149,7 @@
   --tx3: #6d7178;
   --tx4: #6e7278;
   --acc: #0c7f6b;
+  --warn: #9e2f27;
 }
 
 @layer base {
