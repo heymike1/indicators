@@ -45,7 +45,7 @@ export function ScriptLibrary() {
                   <TabsTrigger
                     key={f.value}
                     value={f.value}
-                    className="h-auto flex-none rounded-none border-0 px-0 pb-[13px] text-[13.5px] font-medium text-tx2 not-first:ml-[26px] after:bottom-[-1px] after:h-0.5 after:bg-foreground data-active:font-semibold data-active:text-foreground"
+                    className="h-auto flex-none rounded-none border-0 px-0 pb-[13px] text-sm font-normal text-tx2 not-first:ml-[26px] after:bottom-[-1px] after:h-0.5 after:bg-foreground data-active:font-medium data-active:text-foreground"
                   >
                     {f.label}
                   </TabsTrigger>
@@ -64,11 +64,11 @@ export function ScriptLibrary() {
                 <a
                   key={ind.slug}
                   href={`#${ind.slug}`}
-                  className="group flex flex-col rounded-md focus-visible:outline-none"
+                  className="group flex flex-col rounded-2xl focus-visible:outline-none"
                 >
-                  <Card className="flex-1 gap-0 rounded-md border border-hair py-0 ring-0 transition-[border-color,box-shadow] duration-200 group-hover:border-hair-hi group-hover:shadow-[0_1px_2px_rgba(21,23,26,0.04),0_8px_20px_rgba(21,23,26,0.045)]">
+                  <Card className="flex-1 gap-0 rounded-2xl border border-hair py-0 shadow-none ring-0 transition-colors duration-200 group-hover:border-forest">
                     <div className="relative border-b border-hair">
-                      <span className="absolute top-2.5 left-2.5 z-[2] rounded-sm border border-hair bg-white/90 px-1.5 py-[3px] font-mono text-[9.5px] leading-none font-medium tracking-[0.12em] text-tx3">
+                      <span className="absolute top-2.5 left-2.5 z-[2] rounded-full border-[1.5px] border-forest bg-snow px-2 py-[5px] font-mono text-[10px] leading-none font-medium tracking-[0.015em] text-forest">
                         {ind.category.toUpperCase()}
                       </span>
                       <ChartSvg chart={ind.chart} size="sm" />
@@ -76,7 +76,7 @@ export function ScriptLibrary() {
 
                     <CardContent className="flex flex-1 flex-col gap-2 px-4 pt-4 pb-5">
                       <div className="flex items-baseline justify-between gap-3">
-                        <h3 className="text-base font-semibold tracking-[-0.012em]">
+                        <h3 className="text-[18px] font-normal tracking-[-0.01em]">
                           {ind.title}
                         </h3>
                         <span className="font-mono text-[11px] text-tx4">

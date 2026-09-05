@@ -9,7 +9,7 @@ export function Showcases() {
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="flex max-w-[640px] flex-col gap-[18px] border-b border-hair pb-13">
           <Kicker>The indicators</Kicker>
-          <h2 className="text-[clamp(27px,4.4vw,40px)] leading-[1.14] font-medium tracking-[-0.022em]">
+          <h2 className="text-[clamp(28px,4.4vw,40px)] leading-[1.1] font-[350] tracking-[-0.01em]">
             Everything you need on the chart.
           </h2>
           <p className="text-[18px] leading-[1.6] text-tx2">
@@ -41,7 +41,7 @@ export function Showcases() {
 
                 <div className="flex w-full min-w-0 flex-col gap-3.5 lg:flex-[1_1_300px]">
                   <p className="font-mono text-[11px] tracking-[0.1em] text-tx4">{ind.num}</p>
-                  <h3 className="text-[clamp(22px,3vw,28px)] leading-[1.2] font-medium tracking-[-0.018em]">
+                  <h3 className="text-[clamp(21px,3vw,24px)] leading-[1.2] font-[350] tracking-[-0.02em]">
                     {ind.title}
                   </h3>
                   <p className="text-base leading-[1.6] text-tx2">{ind.description}</p>

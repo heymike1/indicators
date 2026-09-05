@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-manrope), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --font-heading: var(--font-manrope), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,7 +47,12 @@
   --radius-3xl: var(--radius);
   --radius-4xl: var(--radius);
   --color-acc: var(--acc);
-  --color-warn: var(--warn);
+  --color-forest: var(--forest);
+  --color-lime: var(--lime);
+  --color-sage: var(--sage);
+  --color-euc: var(--euc);
+  --color-snow: var(--snow);
+  --color-stone: var(--stone);
   --color-ink: var(--ink);
   --color-hair: var(--hair);
   --color-hair-hi: var(--hair-hi);
@@ -58,19 +63,34 @@
 }
 
 :root {
-  /* ---- brand palette (light only) ---- */
-  --acc: #0f9d84;              /* the single accent */
-  --warn: #c2453c;             /* notices only, never decoration */
-  --ink: #2b2f36;              /* candle charcoal */
-  --page: #f7f7f5;
-  --surface: #ffffff;
-  --hair: #e3e4e1;
-  --hair-hi: #b9bdb7;
-  --gridline: #efefec;
-  --tx: #15171a;
-  --tx2: #6b7078;
-  --tx3: #7a7f87;
-  --tx4: #8d929a;
+  /* ---- Seed palette ----------------------------------------------
+     One chromatic pillar (Forest Depths), one warm neutral (Snow White)
+     and one accent (Lime Pulse) that only ever appears at badge size.
+     The site's own roles are mapped onto it below, so every component
+     and every chart keeps reading from the names it already used. */
+  --forest: #1c3a13;
+  --lime: #d3fa99;
+  --sage: #757c5d;
+  --olive: #9f995b;
+  --euc: #698e79;
+  --snow: #fcfcf7;
+  --stone: #eeeee9;
+  --frost: #c4c7c4;
+  --ash: #b3b3b3;
+  --pewter: #666666;
+
+  --acc: var(--euc);           /* chart accent: session bands, live dot */
+  --ink: var(--forest);        /* candle ink */
+  --page: var(--snow);
+  --surface: var(--snow);
+  --hair: var(--stone);
+  --hair-hi: var(--frost);
+  --gridline: #f0f0ea;         /* one step under the separator, so the
+                                  grid never competes with the candles */
+  --tx: var(--forest);
+  --tx2: var(--pewter);
+  --tx3: var(--sage);
+  --tx4: var(--sage);
 
   /* ---- shadcn tokens mapped onto the brand ---- */
   --background: var(--page);
@@ -81,17 +101,17 @@
   --popover-foreground: var(--tx);
   --primary: var(--tx);
   --primary-foreground: var(--page);
-  --secondary: #eeeeeb;
+  --secondary: var(--stone);
   --secondary-foreground: var(--tx);
-  --muted: #eeeeeb;
+  --muted: var(--stone);
   --muted-foreground: var(--tx2);
   --accent: var(--acc);
-  --accent-foreground: #ffffff;
+  --accent-foreground: var(--snow);
   --destructive: oklch(0.577 0.245 27.325);
   --border: var(--hair);
   --input: var(--hair);
-  --ring: var(--acc);
-  --radius: 0.375rem;          /* 6px ceiling */
+  --ring: var(--forest);
+  --radius: 1rem;              /* Seed cards; buttons and badges go full */
 }
 
 
@@ -108,7 +128,7 @@
 .legal h2 {
   margin-top: 46px;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.015em;
   color: var(--tx);
@@ -116,10 +136,10 @@
 .legal h3 {
   margin-top: 28px;
   font-size: 15.5px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--tx);
 }
-.legal strong { font-weight: 600; color: var(--tx); }
+.legal strong { font-weight: 500; color: var(--tx); }
 .legal ul {
   margin-top: 14px;
   padding-left: 20px;
@@ -128,28 +148,27 @@
 .legal li { margin-top: 8px; }
 .legal li::marker { color: var(--tx4); }
 .legal a {
-  color: var(--acc);
+  color: var(--forest);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.legal a:hover { color: var(--tx); }
+.legal a:hover { color: var(--sage); }
 
 /* ----------------------------------------------------------------
    Optional AA contrast mode.
 
-   The brand palette above is the specified one. Three of its tones sit
-   below WCAG AA 4.5:1 for normal-size text on #f7f7f5 — muted #7a7f87
-   (3.76:1), muted #8d929a (2.92:1) and the teal accent (3.17:1) — which
-   Lighthouse flags. Set data-contrast="aa" on <html> to swap in the same
-   hues darkened to pass; nothing else about the design changes.
+   The Seed palette above is the specified one. Two of its tones sit
+   below WCAG AA 4.5:1 for normal-size text on Snow White — Sage Moss
+   (4.24:1), which carries captions and chart axes, and Eucalyptus
+   (3.54:1), the chart accent. Set data-contrast="aa" on <html> to swap
+   in the same hues darkened to pass; nothing else about the design
+   changes. Forest Depths (12.3:1) and Pewter (5.56:1) already clear it.
    (SVG chart axis labels keep the lighter tone either way — axe does not
    audit SVG text, and a dark axis fights the candles.)
    ---------------------------------------------------------------- */
 :root[data-contrast="aa"] {
-  --tx3: #6d7178;
-  --tx4: #6e7278;
-  --acc: #0c7f6b;
-  --warn: #9e2f27;
+  --sage: #6a7052;
+  --euc: #55735f;
 }
 
 @layer base {
@@ -165,13 +184,13 @@
     font-variant-numeric: tabular-nums;
   }
   :focus-visible {
-    outline: 2px solid var(--acc);
+    outline: 2px solid var(--forest);
     outline-offset: 3px;
     border-radius: 3px;
   }
   ::selection {
-    background: color-mix(in srgb, var(--acc) 16%, transparent);
-    color: var(--tx);
+    background: var(--lime);
+    color: var(--forest);
   }
 }
 

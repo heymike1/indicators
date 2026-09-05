@@ -7,7 +7,7 @@ export function Hero() {
     <section className="pt-[116px] sm:pt-[152px]">
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="mx-auto flex max-w-[720px] flex-col items-center gap-[22px] text-center">
-          <h1 className="text-[clamp(34px,6.6vw,60px)] leading-[1.06] font-semibold tracking-[-0.028em]">
+          <h1 className="text-[clamp(32px,5.6vw,48px)] leading-[1.1] font-[350] tracking-[-0.015em]">
             Spend less time marking charts.
           </h1>
 
@@ -19,9 +19,9 @@ export function Hero() {
           <div className="mt-1.5 flex flex-wrap justify-center gap-3">
             <CheckoutButton
               label="Get Access"
-              className="h-11 rounded px-5 text-sm font-semibold hover:bg-black"
+              className="h-[52px] rounded-full px-6 text-base font-normal"
             />
-            <Button asChild size="lg" variant="outline" className="h-11 rounded border-hair px-5 text-sm font-semibold hover:border-hair-hi hover:bg-transparent">
+            <Button asChild size="lg" variant="outline" className="h-[52px] rounded-full border-[1.5px] border-forest bg-snow px-6 text-base font-normal hover:bg-transparent">
               <a href="#indicators">Explore Indicators</a>
             </Button>
           </div>

@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Manrope, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+/** Seed Sans stands in as Inter: a variable face, so the 350 weight the
+ *  display sizes are set in is actually available rather than rounded to 400. */
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${manrope.variable} ${jetbrainsMono.variable} h-full`}>
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

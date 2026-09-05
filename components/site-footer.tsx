@@ -23,18 +23,18 @@ const COLS: { label: string; links: { href: string; label: string }[] }[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-[110px] border-t border-hair sm:mt-[150px]">
+    <footer className="mt-[110px] bg-forest pb-4 text-snow sm:mt-[150px]">
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="flex flex-wrap gap-14 pt-14 pb-11">
           <div className="flex flex-[1_1_340px] flex-col gap-4">
             <Link
               href="/#top"
-              className="inline-flex items-center gap-2.5 text-sm font-medium tracking-[-0.01em]"
+              className="inline-flex items-center gap-2.5 text-base font-normal tracking-[-0.01em]"
             >
               <LogoMark size={28} />
               243 Trading
             </Link>
-            <p className="max-w-[38ch] text-sm text-tx2">
+            <p className="max-w-[38ch] text-sm text-snow/70">
               TradingView indicators built to automate time, price, liquidity
               and market relationship analysis.
             </p>
@@ -42,7 +42,7 @@ export function SiteFooter() {
               href="https://x.com/interbankguy"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-fit items-center gap-2 text-[13.5px] text-tx2 transition-colors hover:text-foreground"
+              className="inline-flex w-fit items-center gap-2 text-sm text-snow/70 transition-colors hover:text-snow"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -67,7 +67,7 @@ export function SiteFooter() {
                   <a
                     key={l.href}
                     href={l.href}
-                    className="text-[13.5px] text-tx2 transition-colors hover:text-foreground"
+                    className="text-sm text-snow/70 transition-colors hover:text-snow"
                   >
                     {l.label}
                   </a>
@@ -77,15 +77,15 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div id="disclaimer" className="border-t border-hair pt-[22px] pb-11">
-          <p className="mb-6 text-xs leading-[1.6] text-warn/80">
+        <div id="disclaimer" className="border-t border-snow/25 pt-[22px] pb-11">
+          <p className="mb-6 w-fit rounded-full bg-lime px-2 py-1.5 font-mono text-[12px] leading-none font-medium tracking-[0.015em] text-forest">
             We do not provide education or training.
           </p>
           <div className="flex flex-wrap items-start gap-10">
-            <p className="shrink-0 text-xs leading-[1.6] text-tx4">
+            <p className="shrink-0 text-xs leading-[1.6] text-snow/55">
               © 2026 243 Trading
             </p>
-            <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-tx4">
+            <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-snow/55">
               Trading futures, forex and other leveraged products involves
               substantial risk of loss and is not suitable for every investor.
               These indicators are analysis tools, not financial advice, and do
