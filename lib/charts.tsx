@@ -656,6 +656,22 @@ export const SPECS: Record<ChartKey, Spec> = {
       clear(m.hiA, true, 5); clear(m.hiB, true, 5);
       clear(m.loA, false, 4); clear(m.loB, false, 5);
       clear(m.midA, false, 3); clear(m.midB, false, 3);
+      // A line has to run cleanly from the one swing to the other, so no bar
+      // in between may put a wick through it. Walk each span and push the
+      // ones that do back off the line.
+      const clearSpan = (a: number, b: number, hi: boolean) => {
+        const pa = hi ? d[a].h : d[a].l;
+        const pb = hi ? d[b].h : d[b].l;
+        const gap = sp.vol * 0.1;
+        for (let j = a + 1; j < b; j++) {
+          const lvl = pa + ((pb - pa) * (j - a)) / (b - a);
+          const over = hi ? d[j].h - (lvl - gap) : lvl + gap - d[j].l;
+          if (over > 0) shiftBar(d[j], hi ? -over : over);
+        }
+      };
+      clearSpan(m.hiA, m.hiB, true);
+      clearSpan(m.loA, m.loB, false);
+      clearSpan(m.midA, m.midB, false);
       return m;
     },
     draw(p: Panel, s, small, W, H, m) {
@@ -676,8 +692,14 @@ export const SPECS: Record<ChartKey, Spec> = {
       link(m.hiA, m.hiB, true, QT.line, "90M NQ1!", printed, -9);
       link(m.loA, m.loB, false, QT.line, "90M NQ1!", printed + 0.15, 15);
 
-      // and the smaller swing, where two shorter cycles run the same low
-      link(m.midA, m.midB, false, SMT.small, "30M + 10M NQ1!", printed + 0.35, 15);
+      // and the smaller swing, where two shorter cycles run the same low.
+      // Its label is wider than the span it names, so it is set below the
+      // deepest bar it reaches over rather than a fixed drop off the line.
+      const under = Math.max(
+        ...p.data.slice(Math.max(0, m.midA - 3), m.midB + 4).map((b) => p.y(b.l))
+      );
+      link(m.midA, m.midB, false, SMT.small, "30M + 10M NQ1!", printed + 0.35,
+        under - (p.y(p.data[m.midA].l) + p.y(p.data[m.midB].l)) / 2 + 14);
 
       // flagged as the last of them confirms
       s.node(p.x(m.hiB), p.y(p.data[m.hiB].h), { color: QT.line, late: false, delay: printed + 0.6 });
