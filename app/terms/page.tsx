@@ -127,6 +127,21 @@ export default function TermsPage() {
         any, or those of our associates, directors, employees or agents.
       </p>
 
+      <h2>No Education or Training Provided</h2>
+      <p>
+        We do not provide education. Your subscription gives you access to the
+        indicators themselves and nothing further. It does not include courses,
+        lessons, mentoring, coaching, signals, trade calls, a community, or any
+        other form of training or instruction, and no such service is promised
+        or implied anywhere on this platform.
+      </p>
+      <p>
+        Documentation covering how an indicator is installed, configured and
+        read is provided so that you can operate the tool you have licensed. It
+        is product documentation only and does not constitute education,
+        training or advice of any kind.
+      </p>
+
       <h2>Breaches of These Terms and Conditions</h2>
       <p>
         Without prejudice to our other rights under these Terms and Conditions,

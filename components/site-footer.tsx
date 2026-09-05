@@ -77,20 +77,22 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div
-          id="disclaimer"
-          className="flex flex-wrap items-start gap-10 border-t border-hair pt-[22px] pb-11"
-        >
-          <p className="shrink-0 text-xs leading-[1.6] text-tx4">
-            © 2026 Trading Indicators
+        <div id="disclaimer" className="border-t border-hair pt-[22px] pb-11">
+          <p className="mb-7 w-fit rounded-[5px] border border-warn/40 bg-warn/[0.06] px-3 py-2 text-xs leading-[1.6] font-medium text-warn">
+            We do not provide education.
           </p>
-          <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-tx4">
-            Trading futures, forex and other leveraged products involves
-            substantial risk of loss and is not suitable for every investor.
-            These indicators are analysis tools, not financial advice, and do
-            not guarantee any outcome. Past performance is not indicative of
-            future results.
-          </p>
+          <div className="flex flex-wrap items-start gap-10">
+            <p className="shrink-0 text-xs leading-[1.6] text-tx4">
+              © 2026 Trading Indicators
+            </p>
+            <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-tx4">
+              Trading futures, forex and other leveraged products involves
+              substantial risk of loss and is not suitable for every investor.
+              These indicators are analysis tools, not financial advice, and do
+              not guarantee any outcome. Past performance is not indicative of
+              future results.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

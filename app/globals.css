@@ -47,6 +47,7 @@
   --radius-3xl: var(--radius);
   --radius-4xl: var(--radius);
   --color-acc: var(--acc);
+  --color-warn: var(--warn);
   --color-ink: var(--ink);
   --color-hair: var(--hair);
   --color-hair-hi: var(--hair-hi);
@@ -59,6 +60,7 @@
 :root {
   /* ---- brand palette (light only) ---- */
   --acc: #0f9d84;              /* the single accent */
+  --warn: #c2453c;             /* notices only, never decoration */
   --ink: #2b2f36;              /* candle charcoal */
   --page: #f7f7f5;
   --surface: #ffffff;
