@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - Trading Indicators",
+  title: "Privacy Policy - 243 Trading",
   description:
-    "Privacy Policy for Trading Indicators - how we collect, use, and protect your information.",
+    "Privacy Policy for 243 Trading - how we collect, use, and protect your information.",
 };
 
 export default function PrivacyPage() {
@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         We respect your privacy and are committed to protecting it through our
         compliance with this privacy policy (“Policy”). This Policy describes
         the types of information we may collect from you or that you may provide
-        (“Personal Information”) on the getindicators.com website (“Website” or
+        (“Personal Information”) on the 243trading.com website (“Website” or
         “Service”) and any of its related products and services (collectively,
         “Services”), and our practices for collecting, using, maintaining,
         protecting, and disclosing that Personal Information. It also describes
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
       </p>
       <p>
         This Policy is a legally binding agreement between you (“User”, “you” or
-        “your”) and Funded Gallery (doing business as “Trading Indicators”,
+        “your”) and Funded Gallery (doing business as “243 Trading”,
         “we”, “us” or “our”). If you are entering into this Policy on behalf of
         a business or other legal entity, you represent that you have the
         authority to bind such entity to this Policy, in which case the terms
@@ -561,7 +561,7 @@ export default function PrivacyPage() {
         Policy, we encourage you to contact us using the details below:
       </p>
       <p>
-        <a href="mailto:info@getindicators.com">info@getindicators.com</a>
+        <a href="mailto:info@243trading.com">info@243trading.com</a>
       </p>
       <p>
         We will attempt to resolve complaints and disputes and make every

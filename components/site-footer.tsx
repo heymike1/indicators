@@ -32,7 +32,7 @@ export function SiteFooter() {
               className="inline-flex items-center gap-2.5 text-sm font-medium tracking-[-0.01em]"
             >
               <LogoMark size={28} />
-              Trading Indicators
+              243 Trading
             </Link>
             <p className="max-w-[38ch] text-sm text-tx2">
               TradingView indicators built to automate time, price, liquidity
@@ -77,20 +77,22 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div
-          id="disclaimer"
-          className="flex flex-wrap items-start gap-10 border-t border-hair pt-[22px] pb-11"
-        >
-          <p className="shrink-0 text-xs leading-[1.6] text-tx4">
-            © 2026 Trading Indicators
+        <div id="disclaimer" className="border-t border-hair pt-[22px] pb-11">
+          <p className="mb-6 text-xs leading-[1.6] text-warn/80">
+            We do not provide education or training.
           </p>
-          <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-tx4">
-            Trading futures, forex and other leveraged products involves
-            substantial risk of loss and is not suitable for every investor.
-            These indicators are analysis tools, not financial advice, and do
-            not guarantee any outcome. Past performance is not indicative of
-            future results.
-          </p>
+          <div className="flex flex-wrap items-start gap-10">
+            <p className="shrink-0 text-xs leading-[1.6] text-tx4">
+              © 2026 243 Trading
+            </p>
+            <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-tx4">
+              Trading futures, forex and other leveraged products involves
+              substantial risk of loss and is not suitable for every investor.
+              These indicators are analysis tools, not financial advice, and do
+              not guarantee any outcome. Past performance is not indicative of
+              future results.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -91,7 +91,7 @@ export function ScriptLibrary() {
                     <CardFooter className="mt-auto flex items-center border-t border-hair px-4 py-3.5 font-mono text-[10.5px] text-tx3">
                       <span className="inline-flex items-center gap-[7px]">
                         <LogoMark size={18} />
-                        Trading Indicators
+                        243 Trading
                       </span>
                     </CardFooter>
                   </Card>

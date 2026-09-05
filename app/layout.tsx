@@ -17,9 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trading Indicators - TradingView indicators for time, price and liquidity",
+  title: "243 Trading - TradingView indicators for time, price and liquidity",
   description:
-    "Six invite-only TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.",
+    "Six TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
