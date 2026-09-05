@@ -25,6 +25,17 @@ const PO3 = {
    ERD/IRD band runs a third of a block either side of each range boundary.
    Only the labels carry the scale; the geometry below is the same set of
    fractions of the half-range whichever level of the hierarchy is shown: */
+/** Quarterly Theory colours a quarter by its position in its cycle. The
+ *  colour of a cycle's own label is therefore which quarter it is of the
+ *  cycle above it, which is what makes the nesting readable. */
+const QT_Q = ["#8d929a", "#d64545", "#2f8f5b", "#3d7fbf"];
+const QT_CYCLES: [string, number][] = [
+  ["NYAM Q1", 0],
+  ["NYAM Q2", 1],
+  ["NYAM Q3", 2],
+  ["NYAM Q4", 3],
+];
+
 /** QT SSMT draws its cycle comparison in a single violet. */
 const QT = { line: "#6d5bd0", rule: "#c9ccc6" };
 
@@ -79,6 +90,11 @@ type Spec = {
   labelW?: { lg: number; sm: number };
   /** strip reserved below the time axis, for an indicator's own panel */
   footer?: { lg: number; sm: number };
+  /** label the first bar too, when the axis starts on a boundary */
+  axisFromZero?: boolean;
+  /** body width as a share of the slot; a denser chart needs a little more
+   *  to read like the rest of the set */
+  body?: number;
   /** print the candles left to right, like a replay on fast forward */
   print?: { step: number; start: number };
   /** use a deliberate shape instead of the random walk */
@@ -477,36 +493,98 @@ export const SPECS: Record<ChartKey, Spec> = {
     },
   },
 
-  /* ---------- 04 Quarterly Theory Cycles: ES 5m ---------- */
+  /* ---------- 04 Quarterly Theory Cycles: three nested cycles ---------- */
   qt: {
-    seed: 12907, base: 5688.75, vol: 2.6, drift: 0.18, dec: 2,
-    t0: 9 * 60 + 30, step: 5, every: 16,
-    n: { lg: 64, sm: 40 },
-    padT: { lg: 58, sm: 40 },
-    alt: "ES 5-minute chart with four quarter brackets, sixteen sub-quarter ticks and the true open marked.",
-    draw(p: Panel, s, small) {
-      const n = p.n;
-      const top = p.boxTop + 16;
-      const tick = small ? 12 : 16;
+    seed: 12907, base: 5688.75, vol: 1.5, drift: 0, dec: 2,
+    // On 1-minute bars the 90m cycle is the one that fits: its four 22.5m
+    // quarters are 22.5 bars each. The AM session's own 90m quarters would
+    // need 360 candles to show, which is far past legible.
+    t0: 6 * 60, step: 1, every: 23,
+    axisFromZero: true,
+    body: 0.7,               // the densest chart in the set
+    n: { lg: 90, sm: 46 },   // four quarters of 22.5 bars
+    vpad: 0.12,
+    padT: { lg: 30, sm: 18 },
+    print: { step: 0.026, start: 0 },
+    swing: {
+      // a turn roughly every three bars: each impulse gives back a third of
+      // itself before the next one, so the retracements read without the
+      // legs losing their direction
+      path: [
+        [0, 0.2],
+        [0.04, 0.45], [0.07, 0.34],
+        [0.11, 0.62], [0.145, 0.44],
+        [0.185, 0.55], [0.225, 0.24],
+        [0.26, 0.42], [0.295, 0.18],
+        [0.33, 0.3], [0.37, -0.02],
+        [0.405, 0.1], [0.44, -0.22],
+        [0.475, -0.1], [0.51, -0.42],
+        [0.545, -0.3], [0.58, -0.66],
+        [0.615, -1], [0.645, -0.76],
+        [0.675, -0.88], [0.71, -0.52],
+        [0.745, -0.64],
+        [0.775, -0.3], [0.795, -0.42],
+        [0.82, -0.12], [0.84, -0.24],
+        [0.862, 0.1], [0.878, 0],
+        [0.9, 0.34], [0.918, 0.24],
+        [0.938, 0.56], [0.952, 0.46],
+        [0.972, 0.84], [0.985, 0.74], [1, 0.95],
+      ],
+      amp: 9,
+      chop: 0.9,
+    },
+    alt: "ES 5-minute chart with the four NYAM quarters boxed, each split again into its own four quarters.",
+    draw(p: Panel, s) {
+      const per = p.n / 16;              // bars in one quarter
+      const range = (a: number, b: number) => {
+        let hi = -Infinity, lo = Infinity;
+        for (let i = a; i <= b && i < p.n; i++) {
+          if (p.data[i].h > hi) hi = p.data[i].h;
+          if (p.data[i].l < lo) lo = p.data[i].l;
+        }
+        return [hi, lo];
+      };
+      const step = SPECS.qt.print!.step;
 
-      for (let k = 0; k < 4; k++) {
-        const i0 = Math.round((n * k) / 4);
-        const i1 = Math.round((n * (k + 1)) / 4) - 1;
-        const x1 = p.x(i0) - p.slot / 2, x2 = p.x(i1) + p.slot / 2;
-        s.path(`M${x1} ${top + 6}V${top}H${x2}V${top + 6}`, { delay: 0.2 + k * 0.28 });
-        s.text((x1 + x2) / 2, top - 5, `Q${k + 1}`, { anchor: "middle", delay: 0.32 + k * 0.28 });
-        if (k > 0) s.line(x1, top + 8, x1, p.boxBot - 4, { dash: "3 4", op: 0.6, delay: 0.32 + k * 0.28 });
-      }
+      // the true open the whole session is measured from
+      s.line(p.left, p.y(p.data[0].o), p.right, p.y(p.data[0].o), {
+        color: QT.rule, w: 1, dash: "1 3", delay: 0.4,
+      });
 
-      for (let i = 0; i < 16; i++) {
-        const xs = p.left + ((p.right - p.left) * i) / 16 + (p.right - p.left) / 32;
-        s.line(xs, top + tick, xs, top + tick + (small ? 6 : 8), { op: 0.75, delay: 1.7 + i * 0.045 });
-      }
+      QT_CYCLES.forEach(([label, tone], c) => {
+        const from = Math.round(c * per * 4);
+        const to = Math.round((c + 1) * per * 4) - 1;
+        const x1 = p.x(from) - p.slot / 2;
+        const x2 = p.x(Math.min(to, p.n - 1)) + p.slot / 2;
+        const [hi, lo] = range(from, to);
+        const pad = (hi - lo) * 0.06;
+        const top = p.y(hi + pad);
+        const bot = p.y(lo - pad);
+        // a cycle is only known once it has closed
+        const shown = 0.2 + Math.min(to, p.n - 1) * step;
 
-      const q2 = Math.round(n / 4);
-      s.line(p.x(q2) - p.slot / 2, top + 8, p.x(q2) - p.slot / 2, p.boxBot - 4, { acc: true, w: 1.2, draw: true, delay: 3.4 });
-      s.text(p.x(q2) + 6, p.boxBot - 8, "True open", { acc: true, late: true, skipSmall: true });
-      s.node(p.x(q2), p.y(p.data[q2].o), { ring: false });
+        s.band(x1, x2, top, bot, { color: QT_Q[tone], op: 0.022, delay: shown });
+        s.box(x1, top, x2, bot, { color: QT_Q[tone], w: 1, dash: "1 3", op: 0.7, delay: shown });
+        s.text(x1 + 8, top - 7, label, {
+          color: QT_Q[tone], size: 9.5, delay: shown + 0.2, skipSmall: true,
+        });
+
+        // and each of its four quarters, as each of them closes
+        for (let q = 0; q < 4; q++) {
+          const qa = Math.round(from + q * per);
+          const qb = Math.round(from + (q + 1) * per) - 1;
+          if (qa >= p.n) break;
+          const [qh, ql] = range(qa, qb);
+          const qx1 = p.x(qa) - p.slot / 2;
+          const qx2 = p.x(Math.min(qb, p.n - 1)) + p.slot / 2;
+          const qPad = (qh - ql) * 0.08;
+          const qDelay = 0.2 + Math.min(qb, p.n - 1) * step;
+          s.band(qx1, qx2, p.y(qh + qPad), p.y(ql - qPad), { color: QT_Q[q], op: 0.05, delay: qDelay });
+          s.box(qx1, p.y(qh + qPad), qx2, p.y(ql - qPad), {
+            color: QT_Q[q], w: 1, dash: "1 3", op: 0.75, delay: qDelay,
+          });
+        }
+      });
     },
   },
 
@@ -661,7 +739,7 @@ export function ChartSvg({ chart, size }: { chart: ChartKey; size: "lg" | "sm" }
       )}
 
       {s.back}
-      {panels.map((p, i) => <Candles key={i} p={p} print={print} />)}
+      {panels.map((p, i) => <Candles key={i} p={p} print={print} body={sp.body} />)}
 
       {print && (
         <line
@@ -675,13 +753,21 @@ export function ChartSvg({ chart, size }: { chart: ChartKey; size: "lg" | "sm" }
       )}
 
       <g>
-        {Array.from({ length: Math.floor((panels[0].n - 2) / sp.every) }, (_, k) => {
-          const i = (k + 1) * sp.every;
-          return i < panels[0].n - 2 ? (
-            <text key={i} x={panels[0].x(i)} y={H - footer - 7} textAnchor="middle" className="chart-axis">
+        {Array.from({ length: Math.floor((panels[0].n - 2) / sp.every) + 1 }, (_, k) => {
+          const i = (sp.axisFromZero ? k : k + 1) * sp.every;
+          if (i >= panels[0].n - 2) return null;
+          const first = i === 0;
+          return (
+            <text
+              key={i}
+              x={first ? 2 : panels[0].x(i)}
+              y={H - footer - 7}
+              textAnchor={first ? "start" : "middle"}
+              className="chart-axis"
+            >
               {hhmm(sp.t0 + i * sp.step)}
             </text>
-          ) : null;
+          );
         })}
       </g>
 
