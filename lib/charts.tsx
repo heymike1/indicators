@@ -630,7 +630,6 @@ export const SPECS: Record<ChartKey, Spec> = {
         loB: at(0.435, 0.06, false),
         midA: at(0.6, 0.025, false),
         midB: at(0.695, 0.025, false),
-        nearA: at(0.648, 0.015, false),
       };
       // Each pair has to diverge by a definite amount. The ripple riding on
       // the shape is worth more than these gaps, so set them here rather than
@@ -656,7 +655,7 @@ export const SPECS: Record<ChartKey, Spec> = {
       };
       clear(m.hiA, true, 5); clear(m.hiB, true, 5);
       clear(m.loA, false, 4); clear(m.loB, false, 5);
-      clear(m.midA, false, 3); clear(m.nearA, false, 3); clear(m.midB, false, 3);
+      clear(m.midA, false, 3); clear(m.midB, false, 3);
       return m;
     },
     draw(p: Panel, s, small, W, H, m) {
@@ -677,17 +676,8 @@ export const SPECS: Record<ChartKey, Spec> = {
       link(m.hiA, m.hiB, true, QT.line, "90M NQ1!", printed, -9);
       link(m.loA, m.loB, false, QT.line, "90M NQ1!", printed + 0.15, 15);
 
-      // and the smaller swing, where two shorter cycles run the same low.
-      // Its label clears the deeper of the two blue lines rather than
-      // sitting on the midpoint, where the 10M line would run through it.
-      link(m.midA, m.midB, false, SMT.small, "30M + 10M NQ1!", printed + 0.35,
-        p.y(p.data[m.nearA].l) - (p.y(p.data[m.midA].l) + p.y(p.data[m.midB].l)) / 2 + 16);
-      s.line(p.x(m.nearA), p.y(p.data[m.nearA].l), p.x(m.midB), p.y(p.data[m.midB].l), {
-        color: SMT.small, w: 1.1, draw: true, fast: true, delay: printed + 0.5,
-      });
-      s.text(p.x(m.midB) + 8, p.y(p.data[m.midB].l) + 4, "10M NQ1!", {
-        color: SMT.small, size: 9.5, delay: printed + 0.75, skipSmall: true,
-      });
+      // and the smaller swing, where two shorter cycles run the same low
+      link(m.midA, m.midB, false, SMT.small, "30M + 10M NQ1!", printed + 0.35, 15);
 
       // flagged as the last of them confirms
       s.node(p.x(m.hiB), p.y(p.data[m.hiB].h), { color: QT.line, late: false, delay: printed + 0.6 });
