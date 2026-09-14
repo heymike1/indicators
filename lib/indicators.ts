@@ -98,10 +98,10 @@ export const INDICATORS: Indicator[] = [
     title: "HTF Candles",
     category: "price",
     description:
-      "Use multiple HTF candles to identify HTF imbalances on your execution timeframe, while tracking liquidity levels and sweeps as they form.",
-    bullets: ["Multiple higher timeframes at once", "HTF imbalances on the execution timeframe", "Liquidity levels tracked until swept"],
-    symbol: "NQ1! · 5m",
-    detail: "1H",
+      "Use multiple HTF candles to identify HTF imbalances and inversions on your execution timeframe, while tracking liquidity levels and sweeps as they form.",
+    bullets: ["Multiple higher timeframes at once", "HTF imbalances and inversions on the execution timeframe", "Liquidity levels tracked until swept"],
+    symbol: "NQ1! · 1m",
+    detail: "15m",
   },
 ];
 
