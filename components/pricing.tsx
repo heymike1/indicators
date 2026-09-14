@@ -44,12 +44,12 @@ export function Pricing() {
         <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-8 border-b border-hair pb-10">
           <div className="flex flex-col gap-5">
             <Kicker>Pricing</Kicker>
-            <h2 className="max-w-[21ch] text-[clamp(28px,4.4vw,40px)] leading-[1.1] font-[350] tracking-[-0.01em]">
+            <h2 className="max-w-[21ch] text-[clamp(28px,4.4vw,40px)] leading-[1.1] font-normal tracking-[-0.01em]">
               One price. Everything included.
             </h2>
           </div>
           <p className="flex items-baseline gap-2.5 pb-1">
-            <span className="text-[clamp(64px,9vw,104px)] leading-[0.82] font-light tracking-[-0.045em]">
+            <span className="text-[clamp(64px,9vw,104px)] leading-[0.82] font-normal tracking-[-0.045em]">
               $29
             </span>
             <span className="text-[20px] text-tx2">/month</span>

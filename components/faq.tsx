@@ -11,7 +11,7 @@ export function Faq() {
         <div className="flex flex-wrap gap-10 border-t border-hair pt-14 lg:gap-16">
           <div className="flex flex-[1_1_300px] flex-col gap-[18px] self-start">
             <Kicker>FAQ</Kicker>
-            <h2 className="text-[clamp(28px,4.4vw,40px)] leading-[1.1] font-[350] tracking-[-0.01em]">
+            <h2 className="text-[clamp(28px,4.4vw,40px)] leading-[1.1] font-normal tracking-[-0.01em]">
               Questions
             </h2>
           </div>

@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Gabarito, JetBrains_Mono } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-/** Seed Sans stands in as Inter: a variable face, so the 350 weight the
- *  display sizes are set in is actually available rather than rounded to 400. */
-const inter = Inter({
-  variable: "--font-inter",
+/** Gabarito, as a variable face. Its weight axis starts at 400, so the
+ *  display sizes are set at regular rather than the lighter cut they had. */
+const gabarito = Gabarito({
+  variable: "--font-gabarito",
   subsets: ["latin"],
   display: "swap",
 });
@@ -51,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} h-full`}>
+    <html lang="en" className={`${gabarito.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
