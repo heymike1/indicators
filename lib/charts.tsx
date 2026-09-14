@@ -755,13 +755,15 @@ export const SPECS: Record<ChartKey, Spec> = {
   /* ---------- 07 HTF Candles: the quarter-hour drawn beside the one-minute tape ---------- */
   htf: {
     seed: 7141, base: 29575, vol: 4.5, drift: 0, dec: 2,
-    t0: 8 * 60, step: 1, every: 30, axisFromZero: true,
-    n: { lg: 108, sm: 56 },
-    // the strip on the right is where the higher timeframe is drawn
-    labelW: { lg: 236, sm: 140 },
+    t0: 8 * 60 + 15, step: 1, every: 30, axisFromZero: true,
+    n: { lg: 93, sm: 48 },
+    // the strip on the right is where the higher timeframe is drawn; it is
+    // kept as narrow as eight candles allow, so the minute bars on the left
+    // get the width to read hollow and filled like the other charts
+    labelW: { lg: 184, sm: 112 },
     vpad: 0.1,
     padT: { lg: 22, sm: 16 },
-    body: 0.62,
+    body: 0.74,
     print: { step: 0.022, start: 0 },
     swing: {
       // Two quiet swings, then a rally in four legs with a pullback after
@@ -770,14 +772,13 @@ export const SPECS: Record<ChartKey, Spec> = {
       // the lower one and held there through two bounces, through it, back
       // up under it and turned away again, then the plunge.
       path: [
-        [0, 0.1], [0.04, -0.3], [0.09, -0.15], [0.13, -0.05],
-        [0.16, -0.2], [0.2, 0.02], [0.24, -0.08], [0.27, 0.1],
-        [0.3, -0.1], [0.34, 0.24], [0.375, 0.48], [0.4, 0.36], [0.42, 0.42], [0.44, 0.24],
-        [0.48, 0.57], [0.51, 0.5], [0.54, 0.66], [0.57, 0.5], [0.61, 0.72], [0.64, 0.62],
-        [0.68, 0.84], [0.7, 0.78], [0.72, 0.9],
-        [0.748, 0.68], [0.767, 0.8], [0.795, 0.58], [0.813, 0.7], [0.841, 0.36],
-        [0.86, 0.55], [0.879, 0.13], [0.897, 0.34], [0.916, 0.12], [0.935, 0.3], [0.944, 0.13],
-        [0.953, -0.22], [0.963, 0.15], [0.972, -0.92], [0.982, -0.85], [1, -0.5],
+        [0, -0.09], [0.023, -0.2], [0.07, 0.02], [0.116, -0.08], [0.151, 0.1], [0.186, -0.1],
+        [0.232, 0.24], [0.273, 0.48], [0.302, 0.36], [0.325, 0.42], [0.349, 0.24],
+        [0.395, 0.57], [0.43, 0.5], [0.465, 0.66], [0.5, 0.5], [0.546, 0.72], [0.581, 0.62],
+        [0.628, 0.84], [0.651, 0.78], [0.674, 0.9], [0.707, 0.68], [0.729, 0.8], [0.762, 0.58],
+        [0.783, 0.7], [0.815, 0.36], [0.837, 0.55], [0.859, 0.16], [0.88, 0.34], [0.902, 0.14],
+        [0.924, 0.3], [0.935, 0.16], [0.945, -0.22], [0.957, 0.15], [0.967, -0.92],
+        [0.979, -0.85], [1, -0.5],
       ],
       amp: 46,
       chop: 1.2,
@@ -785,7 +786,7 @@ export const SPECS: Record<ChartKey, Spec> = {
     alt: "NQ 1-minute chart with the morning's 15-minute candles drawn to the right of price, two thin imbalances left by the rally shaded across the chart, and price falling back through both.",
     shapeOne(d, sp) {
       const n = d.length;
-      const hb = Math.round(n / 7.2);    // bars to the quarter hour
+      const hb = Math.round(n / 6.2);    // bars to the quarter hour
       const hi = (a: number, b: number) => Math.max(...d.slice(a, b).map((x) => x.h));
       const lo = (a: number, b: number) => Math.min(...d.slice(a, b).map((x) => x.l));
 
@@ -806,8 +807,8 @@ export const SPECS: Record<ChartKey, Spec> = {
         }
         return [hi(k * hb, (k + 1) * hb), lo((k + 2) * hb, (k + 3) * hb), (k + 1) * hb, (k + 3) * hb];
       };
-      const fvgA = hold(1);   // 08:15 → 08:45, opened by 08:30
-      const fvgB = hold(2);   // 08:30 → 09:00, opened by 08:45
+      const fvgA = hold(0);   // 08:15 → 08:45, opened by 08:30
+      const fvgB = hold(1);   // 08:30 → 09:00, opened by 08:45
 
       // The retests are what make the imbalances read. After the first fall
       // price comes back up into the upper one and is turned away at its
@@ -816,12 +817,12 @@ export const SPECS: Record<ChartKey, Spec> = {
       // underneath and is turned away once more. The shape aims for each;
       // the ripple would smear them, so the windows are held to the edges.
       const win = (a: number, b: number) => [Math.round(a * (n - 1)), Math.round(b * (n - 1))];
-      const [bA, bB] = win(0.848, 0.872);
+      const [bA, bB] = win(0.823, 0.851);
       for (let i = bA; i < bB; i++) if (d[i].h > fvgB[1]) shiftBar(d[i], fvgB[1] - d[i].h);
-      const [aA, aB] = win(0.87, 0.948);
+      const [aA, aB] = win(0.849, 0.940);
       for (let i = aA; i < aB; i++) if (d[i].l < fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].l);
       // and once through the lower one, the same from underneath
-      const [uA, uB] = win(0.958, 0.968);
+      const [uA, uB] = win(0.951, 0.963);
       for (let i = uA; i < uB; i++) if (d[i].h > fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].h);
 
       // each quarter hour as one candle, the last still forming
@@ -837,7 +838,7 @@ export const SPECS: Record<ChartKey, Spec> = {
       const print = SPECS.htf.print!;
       const at = (i: number) => (small ? 0 : print.start + i * print.step);
       const stripL = p.right, stripR = W - GUTTER;
-      const pad = small ? 6 : 12;
+      const pad = small ? 5 : 9;
       const htf = m.htf as number[][];
       const slot = (stripR - stripL - 2 * pad) / htf.length;
       const bw = slot * 0.52;
