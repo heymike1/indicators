@@ -154,6 +154,24 @@ export class Sketch {
     );
   }
 
+  /** One candle drawn by hand, in the site's own convention: hollow when
+   *  it closed up, filled when it closed down. For a higher timeframe drawn
+   *  beside the tape, where the slot is the caller's rather than a panel's. */
+  candle(cx: number, yH: number, yL: number, yO: number, yC: number, w: number, o: Anim = {}) {
+    const x0 = r2(cx - w / 2), x1 = r2(cx + w / 2);
+    const top = Math.min(yO, yC), bot = Math.max(Math.max(yO, yC), top + 1);
+    this.front.push(
+      <path
+        key={this.key()}
+        d={`M${cx} ${yH}V${yL}M${x0} ${top}H${x1}V${bot}H${x0}Z`}
+        stroke="var(--ink)" strokeWidth={1}
+        fill={yC <= yO ? "var(--surface)" : "var(--ink)"}
+        className={animClass(o)}
+        style={animStyle(o)}
+      />
+    );
+  }
+
   /** Four corner targeting ticks. */
   corners(x: number, y: number, r: number, o: Anim & { color?: string } = {}) {
     const t = 4;

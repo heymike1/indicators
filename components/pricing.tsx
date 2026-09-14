@@ -8,6 +8,7 @@ const INCLUDED = [
   "SMT Detection",
   "QT SSMT Detection",
   "Sessions & Liquidity",
+  "HTF Candles",
 ];
 
 const ALSO = ["All indicator updates", "All future indicators"];
@@ -57,7 +58,7 @@ export function Pricing() {
 
         {/* What it covers, held in one panel a tier above the canvas. */}
         <div className="mt-10 rounded-[24px] bg-stone p-6 sm:rounded-[32px] sm:p-8 lg:p-10">
-          <ul className="grid grid-cols-1 gap-x-8 gap-y-3.5 min-[520px]:grid-cols-2 min-[1120px]:grid-cols-4">
+          <ul className="grid grid-cols-1 gap-x-8 gap-y-3.5 min-[520px]:grid-cols-2 min-[1120px]:grid-cols-3">
             {INCLUDED.map((item) => (
               <Item key={item} label={item} />
             ))}

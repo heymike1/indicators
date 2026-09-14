@@ -4,7 +4,7 @@ import {
 } from "./ohlc";
 import { Sketch, mkPanel, GridAndAxis, Candles, shiftBar, type Panel } from "./chart-parts";
 
-export type ChartKey = "hero" | "po3" | "gbtime" | "ssmt" | "qt" | "smt" | "sessions";
+export type ChartKey = "hero" | "po3" | "gbtime" | "ssmt" | "qt" | "smt" | "sessions" | "htf";
 
 /** price axis width — wide enough for "20,173.25" in 10px mono */
 const GUTTER = 66;
@@ -35,6 +35,9 @@ const QT_CYCLES: [string, number][] = [
   ["NYAM Q3", 2],
   ["NYAM Q4", 3],
 ];
+
+/** HTF Candles shades an imbalance in the amber the indicator uses. */
+const HTF = { zone: "#e9a23b" };
 
 /** SMT Detection separates the shorter cycles from the 90-minute one. */
 const SMT = { small: "#3d7fbf" };
@@ -746,6 +749,146 @@ export const SPECS: Record<ChartKey, Spec> = {
       s.node(p.x(m.sw), p.y(p.data[m.sw].h));
 
       s.sweep(p, H, 9);
+    },
+  },
+
+  /* ---------- 07 HTF Candles: the quarter-hour drawn beside the one-minute tape ---------- */
+  htf: {
+    seed: 7141, base: 29575, vol: 4.5, drift: 0, dec: 2,
+    t0: 8 * 60 + 15, step: 1, every: 30, axisFromZero: true,
+    n: { lg: 93, sm: 48 },
+    // the strip on the right is where the higher timeframe is drawn; it is
+    // kept as narrow as eight candles allow, so the minute bars on the left
+    // get the width to read hollow and filled like the other charts
+    labelW: { lg: 184, sm: 112 },
+    vpad: 0.1,
+    padT: { lg: 22, sm: 16 },
+    body: 0.74,
+    print: { step: 0.022, start: 0 },
+    swing: {
+      // Two quiet swings, then a rally in four legs with a pullback after
+      // each. The fall is a staircase, never a cliff: lower high, lower low,
+      // through the upper imbalance, back up into it and turned away, onto
+      // the lower one and held there through two bounces, through it, back
+      // up under it and turned away again, then the plunge.
+      path: [
+        [0, -0.09], [0.023, -0.2], [0.07, 0.02], [0.116, -0.08], [0.151, 0.1], [0.186, -0.1],
+        [0.232, 0.24], [0.273, 0.48], [0.302, 0.36], [0.325, 0.42], [0.349, 0.24],
+        [0.395, 0.57], [0.43, 0.5], [0.465, 0.66], [0.5, 0.5], [0.546, 0.72], [0.581, 0.62],
+        [0.628, 0.84], [0.65, 0.9], [0.685, 0.66], [0.71, 0.78], [0.75, 0.4], [0.79, 0.55],
+        [0.83, 0.16], [0.85, 0.18], [0.88, 0.36], [0.91, 0.15], [0.935, -0.25], [0.955, 0.14],
+        [0.972, -0.92], [0.985, -0.85], [1, -0.5],
+      ],
+      amp: 46,
+      chop: 1.2,
+    },
+    alt: "NQ 1-minute chart with the morning's 15-minute candles drawn to the right of price, two thin imbalances left by the rally shaded across the chart, and price falling back through both.",
+    shapeOne(d, sp) {
+      const n = d.length;
+      const hb = Math.round(n / 6.2);    // bars to the quarter hour
+      const hi = (a: number, b: number) => Math.max(...d.slice(a, b).map((x) => x.h));
+      const lo = (a: number, b: number) => Math.min(...d.slice(a, b).map((x) => x.l));
+
+      // The rally leaves two imbalances a candle apart: 08:30 opens a gap
+      // between the 08:15 high and the 08:45 low, then 08:45 opens one
+      // between the 08:30 high and the 09:00 low. The shape rallies in the
+      // two legs that make them; the ripple decides the exact extremes, so
+      // each gap is held open here, moving only the bars that reach into it.
+      const gap = sp.vol * 2;
+      const hold = (k: number) => {
+        const top = hi(k * hb, (k + 1) * hb);
+        const bot = lo((k + 2) * hb, (k + 3) * hb);
+        const short = gap - (bot - top);
+        if (short > 0) {
+          const cap = top - short / 2, floor = bot + short / 2;
+          for (let i = k * hb; i < (k + 1) * hb; i++) if (d[i].h > cap) shiftBar(d[i], cap - d[i].h);
+          for (let i = (k + 2) * hb; i < (k + 3) * hb; i++) if (d[i].l < floor) shiftBar(d[i], floor - d[i].l);
+        }
+        return [hi(k * hb, (k + 1) * hb), lo((k + 2) * hb, (k + 3) * hb), (k + 1) * hb, (k + 3) * hb];
+      };
+      const fvgA = hold(0);   // 08:15 → 08:45, opened by 08:30
+      const fvgB = hold(1);   // 08:30 → 09:00, opened by 08:45
+
+      // The retests are what make the imbalances read. After the first fall
+      // price comes back up into the upper one and is turned away at its
+      // top; then it lands on the lower one and is held at its bottom
+      // through two bounces; then, having broken it, it comes back up
+      // underneath and is turned away once more. The shape aims for each;
+      // the ripple would smear them, so the windows are held to the edges.
+      const win = (a: number, b: number) => [Math.round(a * (n - 1)), Math.round(b * (n - 1))];
+      // The fall is where the structure has to read, so from the top on the
+      // wicks are cut to under half: the legs then show as bodies, and the
+      // touches on the boxes below come from closes rather than spikes.
+      for (let i = Math.round(0.65 * (n - 1)); i < n; i++) {
+        const t = Math.max(d[i].o, d[i].c), bt = Math.min(d[i].o, d[i].c);
+        d[i].h = t + (d[i].h - t) * 0.45;
+        d[i].l = bt - (bt - d[i].l) * 0.45;
+      }
+      const [bA, bB] = win(0.775, 0.805);
+      for (let i = bA; i < bB; i++) if (d[i].h > fvgB[1]) shiftBar(d[i], fvgB[1] - d[i].h);
+      const [aA, aB] = win(0.82, 0.925);
+      for (let i = aA; i < aB; i++) if (d[i].l < fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].l);
+      // the bounce off the lower box stops short of the upper one: a lower
+      // high between the two, not a second visit
+      const [cA, cB] = win(0.86, 0.9);
+      const ceiling = fvgB[0] - gap * 0.8;
+      for (let i = cA; i < cB; i++) if (d[i].h > ceiling) shiftBar(d[i], ceiling - d[i].h);
+      // and once through the lower one, the same from underneath
+      const [uA, uB] = win(0.945, 0.962);
+      for (let i = uA; i < uB; i++) if (d[i].h > fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].h);
+
+      // each quarter hour as one candle, the last still forming
+      const htf: number[][] = [];
+      for (let a = 0; a < n; a += hb) {
+        const seg = d.slice(a, Math.min(n, a + hb));
+        htf.push([seg[0].o, Math.max(...seg.map((x) => x.h)), Math.min(...seg.map((x) => x.l)),
+                  seg[seg.length - 1].c, Math.min(n, a + hb)]);
+      }
+      return { hb, htf, fvg: [fvgA, fvgB] };
+    },
+    draw(p: Panel, s, small, W, H, m) {
+      const print = SPECS.htf.print!;
+      const at = (i: number) => (small ? 0 : print.start + i * print.step);
+      const stripL = p.right, stripR = W - GUTTER;
+      const pad = small ? 5 : 9;
+      const htf = m.htf as number[][];
+      const slot = (stripR - stripL - 2 * pad) / htf.length;
+      const bw = slot * 0.52;
+      const cx = (k: number) => stripL + pad + (k + 0.5) * slot;
+
+      // each imbalance from the open of the candle that made it, shown once
+      // the candle after has closed and confirmed it, and run across the
+      // strip the way the indicator carries a level forward
+      for (const [bot, top, openIdx, closeIdx] of m.fvg as number[][]) {
+        const x1 = p.x(openIdx) - p.slot / 2, x2 = stripR - 4;
+        const delay = at(closeIdx) + 0.2;
+        s.band(x1, x2, p.y(top), p.y(bot), { color: HTF.zone, op: 0.24, delay });
+        s.line(x1, p.y((top + bot) / 2), x2, p.y((top + bot) / 2), {
+          color: HTF.zone, dash: "1.5 3", op: 0.75, delay,
+        });
+      }
+
+      // each quarter hour's candle appears as the tape passes it
+      htf.forEach(([o, h, l, c, close], k) => {
+        s.candle(cx(k), p.y(h), p.y(l), p.y(o), p.y(c), bw, { delay: at(close) + 0.1 });
+      });
+
+      // the last close, carried across to the strip
+      const last = p.data[p.n - 1];
+      s.line(p.x(p.n - 1) + p.slot, p.y(last.c), stripR, p.y(last.c), {
+        dash: "2 3", op: 0.55, delay: at(p.n) + 0.1,
+      });
+
+      // labelled as the indicator labels it: the timeframe, and the time
+      // left on the candle still forming
+      const floor = p.y(Math.min(...htf.map((b) => b[2])));
+      const lx = cx(htf.length - 2);
+      s.text(lx, floor + 16, "(00:00)", {
+        anchor: "middle", size: 9.5, delay: at(p.n) + 0.3, skipSmall: true,
+      });
+      s.text(lx, floor + (small ? 14 : 28), "15m", {
+        anchor: "middle", size: 10, delay: at(p.n) + 0.3,
+      });
     },
   },
 };
