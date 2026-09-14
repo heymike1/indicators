@@ -9,6 +9,14 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <LegalPage title="Terms of Service" lastUpdated="Aug 22, 2026">
+      <h2>Terms and Conditions</h2>
+      <p>
+        This Terms and Conditions shall govern your use of our platform. By
+        using our platform, you accept this Terms and Conditions in full.
+        Accordingly, if you disagree with this Terms and Conditions or any part
+        of these terms and conditions, you must not use our platform.
+      </p>
+
       <h2>No Education or Training Provided</h2>
       <p>
         We do not provide education or training. Your subscription gives you
@@ -22,14 +30,6 @@ export default function TermsPage() {
         read is provided so that you can operate the tool you have licensed. It
         is product documentation only and does not constitute education,
         training or advice of any kind.
-      </p>
-
-      <h2>Terms and Conditions</h2>
-      <p>
-        This Terms and Conditions shall govern your use of our platform. By
-        using our platform, you accept this Terms and Conditions in full.
-        Accordingly, if you disagree with this Terms and Conditions or any part
-        of these terms and conditions, you must not use our platform.
       </p>
 
       <h2>Income Disclaimer</h2>
