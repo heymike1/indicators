@@ -765,17 +765,19 @@ export const SPECS: Record<ChartKey, Spec> = {
     print: { step: 0.022, start: 0 },
     swing: {
       // Two quiet swings, then a rally in four legs with a pullback after
-      // each, then the fall given a quarter of the chart: through the upper
-      // imbalance, back up into it and turned away, down onto the lower one
-      // and held there through two clear bounces, then through it.
+      // each. The fall is a staircase, never a cliff: lower high, lower low,
+      // through the upper imbalance, back up into it and turned away, onto
+      // the lower one and held there through two bounces, through it, back
+      // up under it and turned away again, then the plunge.
       path: [
         [0, 0.1], [0.04, -0.3], [0.09, -0.15], [0.13, -0.05],
         [0.16, -0.2], [0.2, 0.02], [0.24, -0.08], [0.27, 0.1],
         [0.3, -0.1], [0.34, 0.24], [0.375, 0.48], [0.4, 0.36], [0.42, 0.42], [0.44, 0.24],
         [0.48, 0.57], [0.51, 0.5], [0.54, 0.66], [0.57, 0.5], [0.61, 0.72], [0.64, 0.62],
-        [0.68, 0.82], [0.71, 0.74], [0.76, 0.9],
-        [0.79, 0.62], [0.81, 0.72], [0.835, 0.36], [0.86, 0.55], [0.885, 0.13], [0.905, 0.36],
-        [0.925, 0.12], [0.945, 0.3], [0.96, 0.13], [0.975, -0.65], [0.99, -0.92], [1, -0.5],
+        [0.68, 0.84], [0.7, 0.78], [0.72, 0.9],
+        [0.748, 0.68], [0.767, 0.8], [0.795, 0.58], [0.813, 0.7], [0.841, 0.36],
+        [0.86, 0.55], [0.879, 0.13], [0.897, 0.34], [0.916, 0.12], [0.935, 0.3], [0.944, 0.13],
+        [0.953, -0.22], [0.963, 0.15], [0.972, -0.92], [0.982, -0.85], [1, -0.5],
       ],
       amp: 46,
       chop: 1.2,
@@ -810,13 +812,17 @@ export const SPECS: Record<ChartKey, Spec> = {
       // The retests are what make the imbalances read. After the first fall
       // price comes back up into the upper one and is turned away at its
       // top; then it lands on the lower one and is held at its bottom
-      // through two bounces before the break. The shape aims for both; the
-      // ripple would smear them, so the windows are held to the edges.
+      // through two bounces; then, having broken it, it comes back up
+      // underneath and is turned away once more. The shape aims for each;
+      // the ripple would smear them, so the windows are held to the edges.
       const win = (a: number, b: number) => [Math.round(a * (n - 1)), Math.round(b * (n - 1))];
       const [bA, bB] = win(0.848, 0.872);
       for (let i = bA; i < bB; i++) if (d[i].h > fvgB[1]) shiftBar(d[i], fvgB[1] - d[i].h);
-      const [aA, aB] = win(0.872, 0.968);
+      const [aA, aB] = win(0.87, 0.948);
       for (let i = aA; i < aB; i++) if (d[i].l < fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].l);
+      // and once through the lower one, the same from underneath
+      const [uA, uB] = win(0.958, 0.968);
+      for (let i = uA; i < uB; i++) if (d[i].h > fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].h);
 
       // each quarter hour as one candle, the last still forming
       const htf: number[][] = [];
