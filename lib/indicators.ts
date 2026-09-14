@@ -91,12 +91,24 @@ export const INDICATORS: Indicator[] = [
     symbol: "EURUSD · 15m",
     detail: "Killzones on",
   },
+  {
+    num: "07",
+    slug: "htf-candles",
+    chart: "htf",
+    title: "HTF Candles",
+    category: "price",
+    description:
+      "Use multiple HTF candles to identify HTF imbalances on your execution timeframe, while tracking liquidity levels and sweeps as they form.",
+    bullets: ["Multiple higher timeframes at once", "HTF imbalances on the execution timeframe", "Liquidity levels tracked until swept"],
+    symbol: "NQ1! · 5m",
+    detail: "1H",
+  },
 ];
 
 export const FAQ: { q: string; a: string }[] = [
   {
     q: "What do I get access to?",
-    a: "All six indicators: Advanced PO3 Ranges, GB Time, QT SSMT Detection, Quarterly Theory Cycles, SMT Detection and Sessions & Liquidity. You also get every update and every indicator released while you are subscribed.",
+    a: "All seven indicators: Advanced PO3 Ranges, GB Time, QT SSMT Detection, Quarterly Theory Cycles, SMT Detection, Sessions & Liquidity and HTF Candles. You also get every update and every indicator released while you are subscribed.",
   },
   {
     q: "Will my $29/month price ever increase?",

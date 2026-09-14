@@ -4,7 +4,7 @@ import {
 } from "./ohlc";
 import { Sketch, mkPanel, GridAndAxis, Candles, shiftBar, type Panel } from "./chart-parts";
 
-export type ChartKey = "hero" | "po3" | "gbtime" | "ssmt" | "qt" | "smt" | "sessions";
+export type ChartKey = "hero" | "po3" | "gbtime" | "ssmt" | "qt" | "smt" | "sessions" | "htf";
 
 /** price axis width — wide enough for "20,173.25" in 10px mono */
 const GUTTER = 66;
@@ -746,6 +746,97 @@ export const SPECS: Record<ChartKey, Spec> = {
       s.node(p.x(m.sw), p.y(p.data[m.sw].h));
 
       s.sweep(p, H, 9);
+    },
+  },
+
+  /* ---------- 07 HTF Candles: the hour drawn beside the five-minute tape ---------- */
+  htf: {
+    seed: 7141, base: 29090, vol: 11, drift: 0, dec: 2,
+    t0: 6 * 60, step: 5, every: 24,
+    n: { lg: 126, sm: 63 },
+    // the strip on the right is where the higher timeframe is drawn
+    labelW: { lg: 236, sm: 140 },
+    vpad: 0.12,
+    padT: { lg: 22, sm: 16 },
+    body: 0.62,
+    print: { step: 0.02, start: 0 },
+    swing: {
+      path: [
+        [0, -1], [0.14, -0.57], [0.29, -1], [0.36, -0.29], [0.4, -0.02], [0.45, -0.4],
+        [0.48, -0.32], [0.53, 0.42], [0.565, 0.55], [0.6, 0.2], [0.64, 0.62], [0.76, 1],
+        [0.86, 0.76], [0.95, 0.33], [1, 0.4],
+      ],
+      amp: 38,
+      chop: 0.85,
+    },
+    alt: "NQ 5-minute chart with the session's hourly candles drawn to the right of price, and the imbalance the 11:00 candle left shaded across the chart from where it formed.",
+    shapeOne(d, sp) {
+      const n = d.length;
+      const hb = Math.round(n / 10.5);   // bars to the hour
+      const h0 = 4 * hb;                 // 10:00, the first hour drawn
+      const hi = (a: number, b: number) => Math.max(...d.slice(a, b).map((x) => x.h));
+      const lo = (a: number, b: number) => Math.min(...d.slice(a, b).map((x) => x.l));
+
+      // The imbalance is the gap the 11:00 candle leaves between the 10:00
+      // high and the 12:00 low. The shape rallies through it, but the ripple
+      // decides the exact extremes, so the gap is set here: only the bars
+      // that reach into it move, and only as far as they need to.
+      const gap = sp.vol * 3.6;
+      const short = gap - (lo(h0 + 2 * hb, h0 + 3 * hb) - hi(h0, h0 + hb));
+      if (short > 0) {
+        const cap = hi(h0, h0 + hb) - short / 2;
+        const floor = lo(h0 + 2 * hb, h0 + 3 * hb) + short / 2;
+        for (let i = h0; i < h0 + hb; i++) if (d[i].h > cap) shiftBar(d[i], cap - d[i].h);
+        for (let i = h0 + 2 * hb; i < h0 + 3 * hb; i++) if (d[i].l < floor) shiftBar(d[i], floor - d[i].l);
+      }
+
+      // each hour from 10:00 as one candle, the last still forming
+      const htf: number[][] = [];
+      for (let k = 0; k < 7; k++) {
+        const a = h0 + k * hb;
+        if (a >= n) break;
+        const seg = d.slice(a, Math.min(n, a + hb));
+        htf.push([seg[0].o, Math.max(...seg.map((x) => x.h)), Math.min(...seg.map((x) => x.l)),
+                  seg[seg.length - 1].c, Math.min(n, a + hb)]);
+      }
+      return { hb, h0, htf, fvgTop: lo(h0 + 2 * hb, h0 + 3 * hb), fvgBot: hi(h0, h0 + hb) };
+    },
+    draw(p: Panel, s, small, W, H, m) {
+      const print = SPECS.htf.print!;
+      const at = (i: number) => (small ? 0 : print.start + i * print.step);
+      const stripL = p.right, stripR = W - GUTTER;
+      const pad = small ? 8 : 14;
+      const slot = (stripR - stripL - 2 * pad) / 7;
+      const bw = slot * 0.52;
+      const cx = (k: number) => stripL + pad + (k + 0.5) * slot;
+      const htf = m.htf as number[][];
+
+      // the imbalance, from where the 10:00 candle opens to the 12:00 candle
+      // that confirms it, and shown only once that candle has closed
+      s.band(p.x(m.h0) - p.slot / 2, cx(2) + bw / 2 + 2, p.y(m.fvgTop), p.y(m.fvgBot), {
+        acc: true, op: 0.1, delay: at(m.h0 + 3 * m.hb) + 0.2,
+      });
+
+      // each hour's candle appears as the tape passes the hour
+      htf.forEach(([o, h, l, c, close], k) => {
+        s.candle(cx(k), p.y(h), p.y(l), p.y(o), p.y(c), bw, { delay: at(close) + 0.1 });
+      });
+
+      // the last close, carried across to the strip
+      const last = p.data[p.n - 1];
+      s.line(p.x(p.n - 1) + p.slot, p.y(last.c), stripR, p.y(last.c), {
+        dash: "2 3", op: 0.55, delay: at(p.n) + 0.1,
+      });
+
+      // labelled as the indicator labels it: the timeframe, and the time
+      // left on the candle still forming
+      const floor = p.y(Math.min(...htf.map((b) => b[2])));
+      s.text(cx(1), floor + 16, "(27:26)", {
+        anchor: "middle", size: 9.5, delay: at(p.n) + 0.3, skipSmall: true,
+      });
+      s.text(cx(1), floor + (small ? 14 : 28), "1H", {
+        anchor: "middle", size: 10, delay: at(p.n) + 0.3,
+      });
     },
   },
 };

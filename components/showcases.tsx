@@ -13,7 +13,7 @@ export function Showcases() {
             Everything you need on the chart.
           </h2>
           <p className="text-[18px] leading-[1.6] text-tx2">
-            Six indicators built to automate repetitive chart work and keep the concepts you already trade visible.
+            Seven indicators built to automate repetitive chart work and keep the concepts you already trade visible.
           </p>
         </div>
 
