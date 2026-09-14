@@ -1,4 +1,4 @@
-# 243 Trading
+# 243 Indicators
 
 One-page marketing site for a suite of seven invite-only TradingView indicators
 sold as a single $29/month subscription.

@@ -2,13 +2,28 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "Terms of Service - 243 Trading",
-  description: "Terms and Conditions governing your use of 243 Trading.",
+  title: "Terms of Service - 243 Indicators",
+  description: "Terms and Conditions governing your use of 243 Indicators.",
 };
 
 export default function TermsPage() {
   return (
     <LegalPage title="Terms of Service" lastUpdated="Aug 22, 2026">
+      <h2>No Education or Training Provided</h2>
+      <p>
+        We do not provide education or training. Your subscription gives you
+        access to the indicators themselves and nothing further. It does not
+        include courses, lessons, mentoring, coaching, signals, trade calls, a
+        community, or any other form of training or instruction, and no such
+        service is promised or implied anywhere on this platform.
+      </p>
+      <p>
+        Documentation covering how an indicator is installed, configured and
+        read is provided so that you can operate the tool you have licensed. It
+        is product documentation only and does not constitute education,
+        training or advice of any kind.
+      </p>
+
       <h2>Terms and Conditions</h2>
       <p>
         This Terms and Conditions shall govern your use of our platform. By
@@ -26,7 +41,7 @@ export default function TermsPage() {
         advice. The platform should not be relied upon as a substitute for
         extensive independent market research before making your actual trading
         decisions. Opinions, market data, recommendations or any other content
-        is subject to change at any time without notice. 243 Trading will
+        is subject to change at any time without notice. 243 Indicators will
         not accept liability for any loss or damage, including without
         limitation any loss of profit, which may arise directly or indirectly
         from use of or reliance on such information.
@@ -42,7 +57,7 @@ export default function TermsPage() {
 
       <h2>Suspension and Cancellation of Your Subscription</h2>
       <p>
-        243 Trading reserves the right to suspend or cancel your
+        243 Indicators reserves the right to suspend or cancel your
         subscription without any further notice nor refund where you:
       </p>
       <ul>
@@ -74,21 +89,21 @@ export default function TermsPage() {
       </p>
       <p>
         <strong>
-          243 Trading does not issue a refund under any circumstance.
+          243 Indicators does not issue a refund under any circumstance.
         </strong>{" "}
         All service is sold “as is” with no guarantee of positive results. You
         assume the responsibility for your purchase, and no refunds will be
         issued.
       </p>
       <p>
-        <strong>Technical Malfunction:</strong> 243 Trading doesn’t
+        <strong>Technical Malfunction:</strong> 243 Indicators doesn’t
         compensate for technical malfunctions on our systems that might prevent
         your use of our services.
       </p>
 
       <h2>Limitations on Investment Guidance and Advice</h2>
       <p>
-        243 Trading is not intended to provide legal, tax or investment
+        243 Indicators is not intended to provide legal, tax or investment
         advice. You are solely responsible for determining whether any
         investment, investment strategy or related transaction is appropriate
         for you based on your personal investment objectives, financial
@@ -125,21 +140,6 @@ export default function TermsPage() {
         the effect a trade might have on any account or open positions. Such
         information may not be consistent with our proprietary investments if
         any, or those of our associates, directors, employees or agents.
-      </p>
-
-      <h2>No Education or Training Provided</h2>
-      <p>
-        We do not provide education or training. Your subscription gives you
-        access to the indicators themselves and nothing further. It does not
-        include courses, lessons, mentoring, coaching, signals, trade calls, a
-        community, or any other form of training or instruction, and no such
-        service is promised or implied anywhere on this platform.
-      </p>
-      <p>
-        Documentation covering how an indicator is installed, configured and
-        read is provided so that you can operate the tool you have licensed. It
-        is product documentation only and does not constitute education,
-        training or advice of any kind.
       </p>
 
       <h2>Breaches of These Terms and Conditions</h2>
