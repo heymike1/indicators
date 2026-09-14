@@ -775,10 +775,9 @@ export const SPECS: Record<ChartKey, Spec> = {
         [0, -0.09], [0.023, -0.2], [0.07, 0.02], [0.116, -0.08], [0.151, 0.1], [0.186, -0.1],
         [0.232, 0.24], [0.273, 0.48], [0.302, 0.36], [0.325, 0.42], [0.349, 0.24],
         [0.395, 0.57], [0.43, 0.5], [0.465, 0.66], [0.5, 0.5], [0.546, 0.72], [0.581, 0.62],
-        [0.628, 0.84], [0.651, 0.78], [0.674, 0.9], [0.707, 0.68], [0.729, 0.8], [0.762, 0.58],
-        [0.783, 0.7], [0.815, 0.36], [0.837, 0.55], [0.859, 0.16], [0.88, 0.34], [0.902, 0.14],
-        [0.924, 0.3], [0.935, 0.16], [0.945, -0.22], [0.957, 0.15], [0.967, -0.92],
-        [0.979, -0.85], [1, -0.5],
+        [0.628, 0.84], [0.65, 0.9], [0.685, 0.66], [0.71, 0.78], [0.75, 0.4], [0.79, 0.55],
+        [0.83, 0.16], [0.85, 0.18], [0.88, 0.36], [0.91, 0.15], [0.935, -0.25], [0.955, 0.14],
+        [0.972, -0.92], [0.985, -0.85], [1, -0.5],
       ],
       amp: 46,
       chop: 1.2,
@@ -817,12 +816,25 @@ export const SPECS: Record<ChartKey, Spec> = {
       // underneath and is turned away once more. The shape aims for each;
       // the ripple would smear them, so the windows are held to the edges.
       const win = (a: number, b: number) => [Math.round(a * (n - 1)), Math.round(b * (n - 1))];
-      const [bA, bB] = win(0.823, 0.851);
+      // The fall is where the structure has to read, so from the top on the
+      // wicks are cut to under half: the legs then show as bodies, and the
+      // touches on the boxes below come from closes rather than spikes.
+      for (let i = Math.round(0.65 * (n - 1)); i < n; i++) {
+        const t = Math.max(d[i].o, d[i].c), bt = Math.min(d[i].o, d[i].c);
+        d[i].h = t + (d[i].h - t) * 0.45;
+        d[i].l = bt - (bt - d[i].l) * 0.45;
+      }
+      const [bA, bB] = win(0.775, 0.805);
       for (let i = bA; i < bB; i++) if (d[i].h > fvgB[1]) shiftBar(d[i], fvgB[1] - d[i].h);
-      const [aA, aB] = win(0.849, 0.940);
+      const [aA, aB] = win(0.82, 0.925);
       for (let i = aA; i < aB; i++) if (d[i].l < fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].l);
+      // the bounce off the lower box stops short of the upper one: a lower
+      // high between the two, not a second visit
+      const [cA, cB] = win(0.86, 0.9);
+      const ceiling = fvgB[0] - gap * 0.8;
+      for (let i = cA; i < cB; i++) if (d[i].h > ceiling) shiftBar(d[i], ceiling - d[i].h);
       // and once through the lower one, the same from underneath
-      const [uA, uB] = win(0.951, 0.963);
+      const [uA, uB] = win(0.945, 0.962);
       for (let i = uA; i < uB; i++) if (d[i].h > fvgA[0]) shiftBar(d[i], fvgA[0] - d[i].h);
 
       // each quarter hour as one candle, the last still forming
