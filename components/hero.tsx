@@ -7,7 +7,7 @@ export function Hero() {
     <section className="pt-[116px] sm:pt-[152px]">
       <div className="mx-auto max-w-[1200px] px-8">
         <div className="mx-auto flex max-w-[720px] flex-col items-center gap-[22px] text-center">
-          <h1 className="text-[clamp(32px,5.6vw,48px)] leading-[1.1] font-[350] tracking-[-0.015em]">
+          <h1 className="text-[clamp(32px,5.6vw,48px)] leading-[1.1] font-normal tracking-[-0.015em]">
             Spend less time marking charts.
           </h1>
 

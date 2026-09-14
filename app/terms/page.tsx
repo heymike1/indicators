@@ -4,6 +4,9 @@ import { LegalPage } from "@/components/legal-page";
 export const metadata: Metadata = {
   title: "Terms of Service - 243 Indicators",
   description: "Terms and Conditions governing your use of 243 Indicators.",
+  alternates: { canonical: "/terms" },
+  openGraph: { title: "Terms of Service - 243 Indicators", description: "Terms and Conditions governing your use of 243 Indicators.", url: "/terms" },
+  twitter: { title: "Terms of Service - 243 Indicators", description: "Terms and Conditions governing your use of 243 Indicators." },
 };
 
 export default function TermsPage() {
