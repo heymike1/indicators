@@ -1,3 +1,8 @@
+/** Where the site lives. Metadata, the sitemap and the structured data all
+ *  build absolute URLs from this one value. */
+export const SITE_URL = "https://243indicators.com";
+export const SITE_NAME = "243 Indicators";
+
 /** Checkout. All "Get Access" CTAs point here. */
 export const CHECKOUT_URL =
   "https://www.tradeuniv.com/c/the-po3-sequence/tier/all-indicators/checkout";

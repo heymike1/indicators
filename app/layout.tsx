@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 /** Seed Sans stands in as Inter: a variable face, so the 350 weight the
@@ -17,10 +18,35 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const TITLE = "243 Indicators - TradingView indicators for time, price and liquidity";
+const DESCRIPTION =
+  "Seven TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.";
+
 export const metadata: Metadata = {
-  title: "243 Indicators - TradingView indicators for time, price and liquidity",
-  description:
-    "Seven TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: "/",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@interbankguy",
+    creator: "@interbankguy",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fcfcf7",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

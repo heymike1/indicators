@@ -4,6 +4,9 @@ import { LegalPage } from "@/components/legal-page";
 export const metadata: Metadata = {
   title: "Return Policy - 243 Indicators",
   description: "Return Policy for 243 Indicators digital goods.",
+  alternates: { canonical: "/return-policy" },
+  openGraph: { title: "Return Policy - 243 Indicators", description: "Return Policy for 243 Indicators digital goods.", url: "/return-policy" },
+  twitter: { title: "Return Policy - 243 Indicators", description: "Return Policy for 243 Indicators digital goods." },
 };
 
 export default function ReturnPolicyPage() {
