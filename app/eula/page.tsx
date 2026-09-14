@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal-page";
 
 export const metadata: Metadata = {
-  title: "EULA - 243 Trading",
-  description: "End User License Agreement for 243 Trading.",
+  title: "EULA - 243 Indicators",
+  description: "End User License Agreement for 243 Indicators.",
 };
 
 export default function EulaPage() {
@@ -11,7 +11,7 @@ export default function EulaPage() {
     <LegalPage title="EULA" lastUpdated="Aug 22, 2026">
       <h2>1. License Grant</h2>
       <p>
-        243 Trading grants you a{" "}
+        243 Indicators grants you a{" "}
         <strong>
           limited, non-exclusive, non-transferable, revocable license
         </strong>{" "}
@@ -22,7 +22,7 @@ export default function EulaPage() {
       <h2>2. Ownership</h2>
       <p>
         The indicators and their source code remain the exclusive intellectual
-        property of 243 Trading.
+        property of 243 Indicators.
       </p>
       <p>No ownership rights are granted.</p>
 
@@ -46,7 +46,7 @@ export default function EulaPage() {
 
       <h2>5. Termination</h2>
       <p>
-        243 Trading may revoke this license at any time without notice.
+        243 Indicators may revoke this license at any time without notice.
       </p>
       <p>Termination does not entitle you to a refund.</p>
 
@@ -58,7 +58,7 @@ export default function EulaPage() {
 
       <h2>7. Limitation of Liability</h2>
       <p>
-        243 Trading is not liable for damages arising from use of the
+        243 Indicators is not liable for damages arising from use of the
         indicators or the platform.
       </p>
 

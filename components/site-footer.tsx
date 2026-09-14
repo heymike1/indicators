@@ -32,7 +32,7 @@ export function SiteFooter() {
               className="inline-flex items-center gap-2.5 text-base font-normal tracking-[-0.01em]"
             >
               <LogoMark size={28} />
-              243 Trading
+              243 Indicators
             </Link>
             <p className="max-w-[38ch] text-sm text-snow/70">
               TradingView indicators built to automate time, price, liquidity
@@ -83,7 +83,7 @@ export function SiteFooter() {
           </p>
           <div className="flex flex-wrap items-start gap-10">
             <p className="shrink-0 text-xs leading-[1.6] text-snow/55">
-              © 2026 243 Trading
+              © 2026 243 Indicators
             </p>
             <p className="max-w-[76ch] flex-[1_1_480px] text-xs leading-[1.6] text-snow/55">
               Trading futures, forex and other leveraged products involves
