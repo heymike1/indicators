@@ -1,15 +1,8 @@
 import { Kicker } from "@/components/kicker";
 import { CheckoutButton } from "@/components/checkout-button";
+import { INDICATORS } from "@/lib/indicators";
 
-const INCLUDED = [
-  "Advanced PO3 Ranges",
-  "Quarterly Theory Cycles",
-  "GB Time",
-  "SMT Detection",
-  "QT SSMT Detection",
-  "Sessions & Liquidity",
-  "HTF Candles",
-];
+const INCLUDED = INDICATORS.map((i) => i.title);
 
 const ALSO = ["All indicator updates", "All future indicators"];
 
