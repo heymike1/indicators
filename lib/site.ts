@@ -5,7 +5,7 @@ export const SITE_NAME = "243 Indicators";
 
 /** Checkout. All "Get Access" CTAs point here. */
 export const CHECKOUT_URL =
-  "https://www.tradeuniv.com/c/the-po3-sequence/tier/all-indicators/checkout";
+  "https://www.tradeuniv.com/c/the-po3-sequence/tier/all-indicators/checkout?r=website&utm_source=website";
 
 /** Spread onto a CTA anchor: opens checkout in a new tab, without handing
  *  the destination a reference back to this window. */
