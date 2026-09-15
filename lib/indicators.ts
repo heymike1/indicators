@@ -21,54 +21,6 @@ export type Indicator = {
 export const INDICATORS: Indicator[] = [
   {
     num: "01",
-    slug: "po3",
-    chart: "po3",
-    title: "Advanced PO3 Ranges",
-    category: "price",
-    description:
-      "Plot single or multiple ranges across markets and timeframes, fully customisable.",
-    bullets: ["Single or stacked ranges", "Any timeframe, any market", "Range highs, lows and equilibrium"],
-    symbol: "NQ1! · 1m",
-    detail: "PO3: 243",
-  },
-  {
-    num: "02",
-    slug: "gb-time",
-    chart: "gbtime",
-    title: "GB Time",
-    category: "time",
-    description:
-      "Our GB Time indicator automatically plots the sequence for you, to help you anticipate turning points.",
-    bullets: ["Full sequence, plotted ahead of price", "Active window highlighted as it forms", "Timezone aware"],
-    symbol: "NQ1! · 1m",
-    detail: "New York",
-  },
-  {
-    num: "03",
-    slug: "ssmt",
-    chart: "ssmt",
-    title: "QT SSMT Detection",
-    category: "correlation",
-    description:
-      "Spot SSMT between current and previous cycles across different markets and timeframes.",
-    bullets: ["Intraday and cycle-level relationships", "Hidden SSMT flagged separately", "Any correlated pair"],
-    symbol: "ES1! · 5m",
-    detail: "90M → Nano",
-  },
-  {
-    num: "04",
-    slug: "qt-cycles",
-    chart: "qt",
-    title: "Quarterly Theory Cycles",
-    category: "time",
-    description:
-      "Customisable indicator covering every cycle and quarter within Quarterly Theory.",
-    bullets: ["Nested cycles, quarters and sub-quarters", "True opens marked", "Show or hide any level of the hierarchy"],
-    symbol: "ES1! · 1m",
-    detail: "90m · 22.5m",
-  },
-  {
-    num: "05",
     slug: "smt",
     chart: "smt",
     title: "SMT Detection",
@@ -80,7 +32,31 @@ export const INDICATORS: Indicator[] = [
     detail: "",
   },
   {
-    num: "06",
+    num: "02",
+    slug: "htf-candles",
+    chart: "htf",
+    title: "HTF Candles",
+    category: "price",
+    description:
+      "Use multiple HTF candles to identify HTF imbalances and inversions on your execution timeframe, while tracking liquidity levels and sweeps as they form.",
+    bullets: ["Multiple higher timeframes at once", "HTF imbalances and inversions on the execution timeframe", "Liquidity levels tracked until swept"],
+    symbol: "NQ1! · 1m",
+    detail: "15m",
+  },
+  {
+    num: "03",
+    slug: "po3",
+    chart: "po3",
+    title: "Advanced PO3 Ranges",
+    category: "price",
+    description:
+      "Plot single or multiple ranges across markets and timeframes, fully customisable.",
+    bullets: ["Single or stacked ranges", "Any timeframe, any market", "Range highs, lows and equilibrium"],
+    symbol: "NQ1! · 1m",
+    detail: "PO3: 243",
+  },
+  {
+    num: "04",
     slug: "sessions",
     chart: "sessions",
     title: "Sessions & Liquidity",
@@ -92,23 +68,47 @@ export const INDICATORS: Indicator[] = [
     detail: "Killzones on",
   },
   {
-    num: "07",
-    slug: "htf-candles",
-    chart: "htf",
-    title: "HTF Candles",
-    category: "price",
+    num: "05",
+    slug: "qt-cycles",
+    chart: "qt",
+    title: "Quarterly Theory Cycles",
+    category: "time",
     description:
-      "Use multiple HTF candles to identify HTF imbalances and inversions on your execution timeframe, while tracking liquidity levels and sweeps as they form.",
-    bullets: ["Multiple higher timeframes at once", "HTF imbalances and inversions on the execution timeframe", "Liquidity levels tracked until swept"],
+      "Customisable indicator covering every cycle and quarter within Quarterly Theory.",
+    bullets: ["Nested cycles, quarters and sub-quarters", "True opens marked", "Show or hide any level of the hierarchy"],
+    symbol: "ES1! · 1m",
+    detail: "90m · 22.5m",
+  },
+  {
+    num: "06",
+    slug: "gb-time",
+    chart: "gbtime",
+    title: "GB Time",
+    category: "time",
+    description:
+      "Our GB Time indicator automatically plots the sequence for you, to help you anticipate turning points.",
+    bullets: ["Full sequence, plotted ahead of price", "Active window highlighted as it forms", "Timezone aware"],
     symbol: "NQ1! · 1m",
-    detail: "15m",
+    detail: "New York",
+  },
+  {
+    num: "07",
+    slug: "ssmt",
+    chart: "ssmt",
+    title: "QT SSMT Detection",
+    category: "correlation",
+    description:
+      "Spot SSMT between current and previous Quarterly Theory Cycles across different markets and timeframes.",
+    bullets: ["Intraday and cycle-level relationships", "Hidden SSMT flagged separately", "Any correlated pair"],
+    symbol: "ES1! · 5m",
+    detail: "90M → Nano",
   },
 ];
 
 export const FAQ: { q: string; a: string }[] = [
   {
     q: "What do I get access to?",
-    a: "All seven indicators: Advanced PO3 Ranges, GB Time, QT SSMT Detection, Quarterly Theory Cycles, SMT Detection, Sessions & Liquidity and HTF Candles. You also get every update and every indicator released while you are subscribed.",
+    a: "All seven indicators: SMT Detection, HTF Candles, Advanced PO3 Ranges, Sessions & Liquidity, Quarterly Theory Cycles, GB Time and QT SSMT Detection. You also get every update and every indicator released while you are subscribed.",
   },
   {
     q: "Will my $29/month price ever increase?",
