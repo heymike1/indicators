@@ -2,7 +2,7 @@ import { FAQ, INDICATORS } from "@/lib/indicators";
 import { CHECKOUT_URL, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const DESCRIPTION =
-  "Seven TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.";
+  "A collection of TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.";
 
 const organization = {
   "@type": "Organization",

@@ -12,8 +12,8 @@ export function Hero() {
           </h1>
 
           <p className="max-w-[640px] text-[18px] leading-[1.6] text-tx2">
-            A suite of TradingView indicators built to automatically map time, price, liquidity and market
-            relationships directly onto your charts.
+            A suite of TradingView indicators built to automatically map time, price, liquidity and
+            intermarket relationships directly onto your charts.
           </p>
 
           <div className="mt-1.5 flex flex-wrap justify-center gap-3">

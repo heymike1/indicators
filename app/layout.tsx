@@ -18,9 +18,9 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const TITLE = "243 Indicators - TradingView indicators for time, price and liquidity";
+const TITLE = "TradingView indicators to automate the concepts you already trade - 243 Indicators";
 const DESCRIPTION =
-  "Seven TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.";
+  "A collection of TradingView indicators that map time, price, liquidity and market relationships onto your charts. One subscription, $29/month forever.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
