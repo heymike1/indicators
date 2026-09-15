@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: "Terms of Service - 243 Indicators",
   description: "Terms and Conditions governing your use of 243 Indicators.",
   alternates: { canonical: "/terms" },
-  openGraph: { title: "Terms of Service - 243 Indicators", description: "Terms and Conditions governing your use of 243 Indicators.", url: "/terms" },
-  twitter: { title: "Terms of Service - 243 Indicators", description: "Terms and Conditions governing your use of 243 Indicators." },
+  openGraph: { title: "Terms of Service - 243 Indicators", description: "Terms and Conditions governing your use of 243 Indicators.", url: "/terms", images: "/opengraph-image" },
+  twitter: { card: "summary_large_image", title: "Terms of Service - 243 Indicators", description: "Terms and Conditions governing your use of 243 Indicators.", images: "/opengraph-image" },
 };
 
 export default function TermsPage() {

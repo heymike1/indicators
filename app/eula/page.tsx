@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: "EULA - 243 Indicators",
   description: "End User License Agreement for 243 Indicators.",
   alternates: { canonical: "/eula" },
-  openGraph: { title: "EULA - 243 Indicators", description: "End User License Agreement for 243 Indicators.", url: "/eula" },
-  twitter: { title: "EULA - 243 Indicators", description: "End User License Agreement for 243 Indicators." },
+  openGraph: { title: "EULA - 243 Indicators", description: "End User License Agreement for 243 Indicators.", url: "/eula", images: "/opengraph-image" },
+  twitter: { card: "summary_large_image", title: "EULA - 243 Indicators", description: "End User License Agreement for 243 Indicators.", images: "/opengraph-image" },
 };
 
 export default function EulaPage() {
