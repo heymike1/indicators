@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: "Privacy Policy - 243 Indicators",
   description: "Privacy Policy for 243 Indicators - how we collect, use, and protect your information.",
   alternates: { canonical: "/privacy" },
-  openGraph: { title: "Privacy Policy - 243 Indicators", description: "Privacy Policy for 243 Indicators - how we collect, use, and protect your information.", url: "/privacy" },
-  twitter: { title: "Privacy Policy - 243 Indicators", description: "Privacy Policy for 243 Indicators - how we collect, use, and protect your information." },
+  openGraph: { title: "Privacy Policy - 243 Indicators", description: "Privacy Policy for 243 Indicators - how we collect, use, and protect your information.", url: "/privacy", images: "/opengraph-image" },
+  twitter: { card: "summary_large_image", title: "Privacy Policy - 243 Indicators", description: "Privacy Policy for 243 Indicators - how we collect, use, and protect your information.", images: "/opengraph-image" },
 };
 
 export default function PrivacyPage() {

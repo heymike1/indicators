@@ -41,7 +41,7 @@ export default async function Image() {
             Spend less time marking charts.
           </div>
           <div style={{ fontSize: 30, color: "#6b7078", lineHeight: 1.4, maxWidth: 900 }}>
-            Seven TradingView indicators for time, price, liquidity and market relationships.
+            TradingView indicators for time, price, liquidity and intermarket relationships.
           </div>
         </div>
 

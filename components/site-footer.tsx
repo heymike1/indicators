@@ -36,7 +36,7 @@ export function SiteFooter() {
             </Link>
             <p className="max-w-[38ch] text-sm text-snow/70">
               TradingView indicators built to automate time, price, liquidity
-              and market relationship analysis.
+              and intermarket relationship analysis.
             </p>
             <a
               href="https://x.com/interbankguy"
